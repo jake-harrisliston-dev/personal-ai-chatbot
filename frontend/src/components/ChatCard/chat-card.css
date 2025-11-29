@@ -1,0 +1,81 @@
+.chat-card {
+    width: 100%;
+    background-color: var(--card-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-md) var(--spacing-md);
+    max-width: 650px;
+    bottom: 0;
+    bottom: var(--spacing-xxxl);
+  }
+  
+  /* Input Container - textarea grows, button aligns to bottom */
+  .input-container {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: flex-end;
+  }
+  
+  .message-input {
+    flex: 1;
+    padding: var(--spacing-md);
+    border: none;
+    border-radius: none;
+    background-color: transparent;
+    color: var(--text-color);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--font-size-base);
+    transition: var(--transition-md);
+    resize: none;
+    overflow: hidden;
+    min-height: var(--spacing-xxl);
+    max-height: 200px;
+    line-height: 1.5;
+    overflow-y: auto;
+  }
+  
+  .message-input:focus {
+    outline: none;
+  }
+  
+  .message-input::placeholder {
+    color: var(--text-thirdly);
+  }
+  
+  .send-button {
+    background-color: rgba(var(--text-color-rgb), 0.9);
+    color: var(--card-color);
+    margin-bottom: 0.4rem;
+    border: none;
+    border-radius: var(--border-radius-full);
+    cursor: pointer;
+    transition: var(--transition-md);
+    flex-shrink: 0;
+    width: var(--spacing-xxl);
+    height: var(--spacing-xxl);
+  }
+  
+  .send-button:hover {
+    background-color: rgba(var(--text-color-rgb), 1);
+  }
+  
+  .btn-secondary {
+    background-color: transparent;
+    margin-bottom: 0.4rem;
+    color: rgba(var(--text-color-rgb), 0.7);
+    border: none;
+    cursor: pointer;
+    transition: var(--transition-md);
+    flex-shrink: 0;
+    width: var(--spacing-xxl);
+    height: var(--spacing-xxl);
+  }
+  
+  .btn-secondary:hover {
+    color: rgba(var(--text-color-rgb), 1);
+  }
+  
+  .button-wrap {
+    display: flex;
+    gap: var(--spacing-md);
+  }
