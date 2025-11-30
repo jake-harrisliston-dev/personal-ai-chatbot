@@ -4,6 +4,7 @@ import Icon from './components/Icon/Icon'
 
 import LandingTitle from './components/LandingTitle/LandingTitle'
 import Modal from './components/Modal/Modal'
+import ChatInterface from './components/ChatInterface/ChatInterface'
 
 function App() {
   const handleSendMessage = (message) => {
@@ -13,11 +14,9 @@ function App() {
 
   return (
     <div className="chat-page">
-      <div className="container">
-        <LandingTitle />
+        <ChatInterface />
         <div className='gradient-overlay'></div>
-      </div>
-      <Modal />
+      {/*<Modal />*/}
     </div>
   )
 }

@@ -18,6 +18,19 @@ export default function ChatCard({ onSendMessage, placeholder }) {
     if (message.trim()) {
       onSendMessage(message)
       setMessage('') // Clear after sending
+      
+      // Reset textarea height
+      if (textareaRef.current) {
+        textareaRef.current.style.height = 'auto'
+      }
+    }
+  }
+  
+  const handleKeyDown = (e) => {
+    // Send on Enter, but allow Shift+Enter for new line
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      handleSend()
     }
   }
 

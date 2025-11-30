@@ -1,8 +1,7 @@
 .chat-card {
-    width: 100%;
+    width: 600px;
     background-color: var(--card-color);
     border: 1px solid var(--border-color);
-
     border-radius: var(--border-radius-lg);
     padding: var(--spacing-md) var(--spacing-md);
     max-width: 650px;
