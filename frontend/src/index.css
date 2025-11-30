@@ -6,6 +6,7 @@
 :root {
   /* Colors from Webflow */
   --background-color: #0b0e18;
+  --background-color-rgb: 11,14,24;
   --background-is-active: #12151f;
   --background-is-hover: #0d1019;
   --text-color: #ffffff;
@@ -123,7 +124,7 @@ a {
 .input-field textarea {
   padding: var(--spacing-md);
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--border-radius-sm);
   background-color: var(--card-color);
   color: var(--text-color);
   font-family: 'Source Sans 3', sans-serif;

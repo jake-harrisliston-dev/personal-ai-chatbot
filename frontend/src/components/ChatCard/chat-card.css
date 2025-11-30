@@ -2,6 +2,7 @@
     width: 100%;
     background-color: var(--card-color);
     border: 1px solid var(--border-color);
+
     border-radius: var(--border-radius-lg);
     padding: var(--spacing-md) var(--spacing-md);
     max-width: 650px;
