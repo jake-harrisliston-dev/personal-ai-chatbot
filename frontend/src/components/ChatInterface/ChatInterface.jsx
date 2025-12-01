@@ -21,7 +21,7 @@ export default function ChatInterface() {
       <div className="chat-section-wrap">
         <div className="chat-section">
             {messages.map((msg, index) => (
-                <div key={index} className="usr-message">
+            <div key={index} className="usr-message">
                 {msg.content}
             </div>
             ))}
