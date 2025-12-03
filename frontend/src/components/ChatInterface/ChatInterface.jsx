@@ -4,6 +4,7 @@ import ChatCard from "../ChatCard/ChatCard"
 
 export default function ChatInterface() {
   const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState('');
 
   const handleSendMessage = (message) => {
     setMessages(prev => [...prev, {

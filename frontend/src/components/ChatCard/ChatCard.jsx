@@ -25,7 +25,6 @@ export default function ChatCard({ onSendMessage, placeholder }) {
       }
     }
   }
-  
   const handleKeyDown = (e) => {
     // Send on Enter, but allow Shift+Enter for new line
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -41,6 +40,7 @@ export default function ChatCard({ onSendMessage, placeholder }) {
           ref={textareaRef}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder={placeholder}
           className="message-input"
           rows={1}
