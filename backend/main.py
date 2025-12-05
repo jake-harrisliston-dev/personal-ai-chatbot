@@ -47,7 +47,7 @@ async def ai_generate(request_body: dict = Body(...)):
                 detail=f"Error generating AI content: {str(e)}"
             )
 
-        return {"response": response}
+        return response
         
 
     except Exception as e:

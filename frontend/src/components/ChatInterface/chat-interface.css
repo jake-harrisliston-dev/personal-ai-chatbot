@@ -41,7 +41,7 @@
     color: var(--text-secondary);
   }
 
-  .usr-message {
+  .user-message {
     width: fit-content;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
@@ -50,4 +50,9 @@
     color: var(--text-secondary);
     text-align: right;
     margin-left: auto;
+  }
+
+  .ai-message {
+    align-self: flex-start;
+    color: var(--text-color);
   }

@@ -22,6 +22,28 @@ export default function ChatInterface() {
             data: message,
           });
           console.log("Response from API: ", response)
+        
+        try {
+          const ai_message = response[0].text;
+          setMessages(prev => [...prev, {
+            role: 'assistant',
+            content: ai_message,
+            timestamp: new Date()
+          }]);
+          setIsLoading(false);
+          return;
+        } catch (error) {
+          console.error('Error parsing AI response: ', error)
+          setMessages(prev => [...prev, {
+            role: 'assistant',
+            content: 'Error generating AI response: ' + error.message,
+            timestamp: new Date()
+          }]);
+          setIsLoading(false);
+          return;
+        }
+
+
     } catch (error) {
         console.error('=== Chat Message Error ===');
         console.error('Chat error details:', error);
@@ -35,7 +57,7 @@ export default function ChatInterface() {
       <div className="chat-section-wrap">
         <div className="chat-section">
             {messages.map((msg, index) => (
-            <div key={index} className="usr-message">
+            <div key={index} className={`${msg.role === 'user' ? 'user-message' : 'ai-message'}`}>
                 {msg.content}
             </div>
             ))}
