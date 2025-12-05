@@ -21,6 +21,7 @@ export default function ChatInterface() {
         const response = await api.aiGenerate({
             data: message,
           });
+          console.log("Response from API: ", response)
     } catch (error) {
         console.error('=== Chat Message Error ===');
         console.error('Chat error details:', error);
