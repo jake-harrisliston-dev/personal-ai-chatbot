@@ -10,7 +10,7 @@ export default function LandingTitle ({}) {
             <div className="chat-header">
                 <h1>Discover AI in your business</h1>
                 <p className="subtitle">
-                    Describe your business to discover how artificial intelligence can help save you time
+                    Describe your business to discover how artificial intelligence can benefit your business
                 </p>
             </div>
 

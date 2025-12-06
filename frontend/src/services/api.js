@@ -38,4 +38,11 @@ export const api = {
       body: JSON.stringify(data),
     });
   },
+  formSubmit: (data) => {
+    console.log("Form data recieved in api.js: ", JSON.stringify(data))
+    return apiCall(`/api/form-submit`, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
+  }
 };

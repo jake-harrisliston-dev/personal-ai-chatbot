@@ -12,11 +12,18 @@ function App() {
     // Handle sending message here
   }
 
+  const [showModal, setShowModal] = useState(true)
+
   return (
     <div className="chat-page">
-        <ChatInterface />
+        <LandingTitle />
         <div className='gradient-overlay'></div>
-      {/*<Modal />*/}
+      
+      {showModal && 
+      <Modal
+        onClose={() => setShowModal(false)}
+        />
+      }
     </div>
   )
 }

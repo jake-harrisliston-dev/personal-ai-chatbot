@@ -1,7 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import "./modal.css"
+import { api } from "../../services/api";
 
-export default function Modal({}) {
+export default function Modal({ onClose }) {
+
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        marketing: true,
+        terms: false,
+    })
+
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState(null)
+
+    const handleChange = (e) => {
+        const { name, type, value, checked } = e.target
+        
+        setFormData(prev => ({
+          ...prev,
+          [name]: type === 'checkbox' ? checked : value
+        }))
+      }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        
+        const submitData = {
+            name: formData.name || undefined,
+            email: formData.email,
+            marketing: formData.marketing,
+            terms: formData.terms,
+        }
+
+        console.log("Data leaving Modal.jsx: ", submitData)
+
+        const response = await api.formSubmit(submitData)
+
+        console.log(response)
+
+        onClose()
+
+    }
 
     
 
@@ -11,7 +51,7 @@ export default function Modal({}) {
 
                 <p className="form-title">Your email is required for this service</p>
 
-                <form /*onSubmit={handleSubmit}*/>
+                <form onSubmit={handleSubmit}>
                     {/*{error && (
                     <div className="error-message">
                         {error}
@@ -23,7 +63,8 @@ export default function Modal({}) {
                         <input
                             type="text"
                             name="name"
-                            /* value={formData.name} */
+                            value={formData.name}
+                            onChange={handleChange}
                         />
                     </div>
 
@@ -32,7 +73,8 @@ export default function Modal({}) {
                         <input
                             type="text"
                             name="email"
-                            /* value={formData.email} */
+                            value={formData.email}
+                            onChange={handleChange}
                             required
                         />
                     </div>
@@ -45,7 +87,8 @@ export default function Modal({}) {
                                     className="checkbox"
                                     type="checkbox"
                                     name="marketing"
-                                    /* value={formData.marketing} */
+                                    checked={formData.marketing}
+                                    onChange={handleChange}
                                 />
                                 Send me insights into new AI approaches for my business (recommended)
                             </label>
@@ -57,7 +100,8 @@ export default function Modal({}) {
                                     className="checkbox"
                                     type="checkbox"
                                     name="terms"
-                                    /* value={formData.marketing} */
+                                    checked={formData.terms}
+                                    onChange={handleChange}
                                     required
                                 />
                                 I agree to the Terms & Conditions and Privacy Policy
