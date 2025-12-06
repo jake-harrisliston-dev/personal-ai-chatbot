@@ -5,11 +5,16 @@ load_dotenv()
 
 client = anthropic.Anthropic()
 
-async def generate_response(messages):
-    message = client.messages.create(
-        model="claude-sonnet-4-20250514",
-        max_tokens=1000,
-        messages=messages
-    )
+def generate_response(messages):
+    try: 
+        with client.messages.stream(
+            model="claude-sonnet-4-20250514",
+            max_tokens=1000,
+            messages=messages
+        ) as stream:
+            for text in stream.text_stream:
+                yield text
+    except Exception as e: 
+        print(f"Error in generate_response_stream: {str(e)}")
+        raise
 
-    return message.content

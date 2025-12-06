@@ -22,7 +22,7 @@ const apiCall = async (endpoint, options = {}) => {
         throw new Error(error.detail || 'API request failed');
       }
       
-      return await response.json();
+      return response;
     } catch (error) {
       console.error('API call failed:', error);
       throw error;

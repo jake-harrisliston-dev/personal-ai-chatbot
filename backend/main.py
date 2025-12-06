@@ -7,6 +7,8 @@ import traceback
 import uuid
 from fastapi.middleware.cors import CORSMiddleware
 from services.aiService import generate_response
+from fastapi.responses import StreamingResponse
+import asyncio
 
 load_dotenv()
 
@@ -21,35 +23,52 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+async def stream_generator(messages):
+    try:
+        for chunk in generate_response(messages):
+            print(f"New Chunk: {chunk}\n\n")
+            yield f"{chunk}"
+            await asyncio.sleep(0.00001)
+    except Exception as e:
+        print(f"Error during stream: {str(e)}")
+        traceback.print_exc()
+        yield f"\n\n[Error: {str(e)}]"
+
 @app.post("/api/ai-generate")
 async def ai_generate(request_body: dict = Body(...)):
     try:
-        print(f"Request body: {request_body}")
         # Get the user prompt from the frontend
         messages = request_body.get("data")
         if not messages:
             raise HTTPException(status_code=400, detail="Message cannot be empty")
 
+        # Ensure messages is an array
+        if not isinstance(messages, list):
+            raise HTTPException(status_code=400, detail="Messages must be an array")
+
         # Clean messages (remove timestamp, keep only role + content)
-        cleaned_messages = [
-            {"role": msg["role"], "content": msg["content"]}
-            for msg in messages
-        ]
-
-        print(f"Cleaned messages: {cleaned_messages}")
-
-        try :
-            response = await generate_response(cleaned_messages)
-
-        except Exception as e:
-            print(f"Error generating ai content: {str(e)}")
-            traceback.print_exc()
+        try: 
+            cleaned_messages = [
+                {"role": msg["role"], "content": msg["content"]}
+                for msg in messages
+            ]
+        except (KeyError, TypeError) as e:
             raise HTTPException(
-                status_code=500, 
-                detail=f"Error generating AI content: {str(e)}"
+                status_code=400,
+                detail=f"Invalid message format: {str(e)}"
             )
 
-        return response
+        return StreamingResponse(
+            stream_generator(cleaned_messages),
+            media_type="text/plain",
+            headers={
+                "Cache-Control": "no-cache",
+                "Connection": "keep-alive",
+            }
+        )
+    
+    except HTTPException:
+        raise
         
 
     except Exception as e:

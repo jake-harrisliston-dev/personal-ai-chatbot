@@ -17,48 +17,53 @@ export default function ChatInterface() {
     
     const updatedMessages = [...messages, newUserMessage]
     setMessages(updatedMessages)
+    
+
+    const aiMessageIndex = updatedMessages.length
+    setMessages(prev => [...prev, {
+      role: 'assistant',
+      content: "",
+      timestamp: new Date()
+    }]);
+    
     setIsLoading(true)
-
-
-    console.log("Message: ", message)
-    console.log("Messages: ", messages)
-    console.log("Updated Messages: ", updatedMessages)
-
 
     // Send message to API
     try {
-        const response = await api.aiGenerate({
-            data: updatedMessages,
-          });
-          console.log("Response from API: ", response)
-        
-        try {
-          const ai_message = response[0].text;
-          setMessages(prev => [...prev, {
-            role: 'assistant',
-            content: ai_message,
-            timestamp: new Date()
-          }]);
-          setIsLoading(false);
-          return;
-        } catch (error) {
-          console.error('Error parsing AI response: ', error)
-          setMessages(prev => [...prev, {
-            role: 'assistant',
-            content: 'Error generating AI response: ' + error.message,
-            timestamp: new Date()
-          }]);
-          setIsLoading(false);
-          return;
+        const response = await api.aiGenerate({data: updatedMessages})
+        const reader = response.body.getReader()
+        const decoder = new TextDecoder()
+
+        while(true) {
+          const {done, value} = await reader.read()
+          if (done) break
+
+          const chunk = decoder.decode(value)
+          console.log("Recieved new chunk: ", chunk)
+
+          setMessages(prev => {
+            const updated = [...prev]
+            updated[aiMessageIndex] ={
+              ...updated[aiMessageIndex],
+              content: updated[aiMessageIndex].content + chunk
+            }
+            return updated
+          })
         }
 
+        setIsLoading(false);
+        return;
+      } catch (error) {
+        console.error('Error parsing AI response: ', error)
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          content: 'Error generating AI response: ' + error.message,
+          timestamp: new Date()
+        }]);
+        setIsLoading(false);
+        return;
+      }
 
-    } catch (error) {
-        console.error('=== Chat Message Error ===');
-        console.error('Chat error details:', error);
-    }
-
-    setIsLoading(false)
   };
 
   return (
