@@ -31,11 +31,11 @@ const apiCall = async (endpoint, options = {}) => {
 
 
 export const api = {
-  aiGenerate: (message) => {
-    console.log("Sending to API:", JSON.stringify(message));   // <-- HERE
+  aiGenerate: (data) => {
+    console.log("Sending to API:", JSON.stringify(data));
     return apiCall(`/api/ai-generate`, {
       method: 'POST',
-      body: JSON.stringify(message),
+      body: JSON.stringify(data),
     });
   },
 };

@@ -9,17 +9,26 @@ export default function ChatInterface() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSendMessage = async (message) => {
-    setMessages(prev => [...prev, {
+    const newUserMessage = {
       role: 'user',
       content: message,
       timestamp: new Date()
-    }]);
-    setIsLoading(true);
+    }
+    
+    const updatedMessages = [...messages, newUserMessage]
+    setMessages(updatedMessages)
+    setIsLoading(true)
 
-    console.log("Message to be sent via API: ", message)
+
+    console.log("Message: ", message)
+    console.log("Messages: ", messages)
+    console.log("Updated Messages: ", updatedMessages)
+
+
+    // Send message to API
     try {
         const response = await api.aiGenerate({
-            data: message,
+            data: updatedMessages,
           });
           console.log("Response from API: ", response)
         

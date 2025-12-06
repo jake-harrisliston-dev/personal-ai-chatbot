@@ -24,21 +24,23 @@ app.add_middleware(
 @app.post("/api/ai-generate")
 async def ai_generate(request_body: dict = Body(...)):
     try:
-        # Get sessionId from frontend
-        sessionId = request_body.get("sessionId")
-        if not sessionId:
-            sessionId = str(uuid.uuid4())
-        
+        print(f"Request body: {request_body}")
         # Get the user prompt from the frontend
-        user_prompt = request_body.get("data")
-        if not user_prompt or len(user_prompt.strip()) == 0:
+        messages = request_body.get("data")
+        if not messages:
             raise HTTPException(status_code=400, detail="Message cannot be empty")
-    
-        print(f"\n\nSession ID: {sessionId} \nMessage: {user_prompt}\n\n")
+
+        # Clean messages (remove timestamp, keep only role + content)
+        cleaned_messages = [
+            {"role": msg["role"], "content": msg["content"]}
+            for msg in messages
+        ]
+
+        print(f"Cleaned messages: {cleaned_messages}")
 
         try :
-            response = await generate_response(user_prompt)
-            print(f"\n\nResponse recieved in main.py: {response}\n\n")
+            response = await generate_response(cleaned_messages)
+
         except Exception as e:
             print(f"Error generating ai content: {str(e)}")
             traceback.print_exc()
