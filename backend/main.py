@@ -26,7 +26,6 @@ app.add_middleware(
 async def stream_generator(messages):
     try:
         for chunk in generate_response(messages):
-            print(f"New Chunk: {chunk}\n\n")
             yield f"{chunk}"
             await asyncio.sleep(0.00001)
     except Exception as e:

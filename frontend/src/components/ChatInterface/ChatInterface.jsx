@@ -39,7 +39,6 @@ export default function ChatInterface() {
           if (done) break
 
           const chunk = decoder.decode(value)
-          console.log("Recieved new chunk: ", chunk)
 
           setMessages(prev => {
             const updated = [...prev]
