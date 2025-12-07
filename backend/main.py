@@ -99,6 +99,7 @@ async def form_submit(data: FormSubmit):
             "last_contacted_method": "Website Chatbot"
         }
 
+        # Only updated business, first_name and last_name if they have values (do not overright data with Null values)
         if data.business and len(data.business) > 0:
             updated_data["business"] = data.business
         

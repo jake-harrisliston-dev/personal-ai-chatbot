@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./chat-interface.css"
 import ChatCard from "../ChatCard/ChatCard"
 import { api } from "../../services/api"
+import ReactMarkdown from 'react-markdown'
 
 export default function ChatInterface() {
   const [messages, setMessages] = useState([]);
@@ -71,7 +72,11 @@ export default function ChatInterface() {
         <div className="chat-section">
             {messages.map((msg, index) => (
             <div key={index} className={`${msg.role === 'user' ? 'user-message' : 'ai-message'}`}>
-                {msg.content}
+              {msg.role === 'user' ? (
+                msg.content
+              ) : (
+                <ReactMarkdown>{msg.content}</ReactMarkdown>
+              )}
             </div>
             ))}
         </div>

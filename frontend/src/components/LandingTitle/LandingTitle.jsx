@@ -3,14 +3,14 @@ import "./landing-title.css"
 
 import ChatCard from "../ChatCard/ChatCard"
 
-export default function LandingTitle ({}) {
+export default function LandingTitle ({ handleStartConvo }) {
 
     return(
         <div className="landing-title-wrap">
             <div className="chat-header">
                 <h1>Discover AI in your business</h1>
                 <p className="subtitle">
-                    Describe your business to discover how artificial intelligence can benefit your business
+                    Describe your business to discover how artificial intelligence can benefit 
                 </p>
             </div>
 
@@ -21,8 +21,11 @@ export default function LandingTitle ({}) {
                 </div>
                 <div className="suggestion-button">Handling customer service</div>
             </div>
-
-            <ChatCard placeholder={"Describe your business..."} />
+        
+            <ChatCard 
+            onSendMessage={handleStartConvo}
+            placeholder={"Describe your business..."} 
+            />
         </div>
 
     )

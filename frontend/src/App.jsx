@@ -7,16 +7,14 @@ import Modal from './components/Modal/Modal'
 import ChatInterface from './components/ChatInterface/ChatInterface'
 
 function App() {
-  const handleSendMessage = (message) => {
-    console.log('Message sent:', message)
-    // Handle sending message here
-  }
 
-  const [showModal, setShowModal] = useState(true)
+  const [showModal, setShowModal] = useState(false)
+
+  
 
   return (
     <div className="chat-page">
-        <LandingTitle />
+        <ChatInterface />
         <div className='gradient-overlay'></div>
       
       {showModal && 

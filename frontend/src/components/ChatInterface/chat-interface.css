@@ -57,4 +57,32 @@
     color: var(--text-color);
     margin: var(--spacing-xl) 0;
     max-width: 90%;
+    line-height: 2;
   }
+  
+  /* Markdown formatting */
+  .ai-message p {
+    margin-bottom: var(--spacing-lg);
+    line-height: 1.6;
+}
+
+.ai-message strong {
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color);
+}
+
+.ai-message ul {
+  margin: var(--spacing-sm) 0;
+  padding-left: var(--spacing-xxl);
+  margin-bottom: var(--spacing-lg);
+}
+
+.ai-message li {
+  margin-bottom: var(--spacing-xs);
+  line-height: 1.5;
+}
+
+.ai-message h1, .ai-message h2, .ai-message h3 {
+  margin-top: var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
+}
