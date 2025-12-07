@@ -47,11 +47,14 @@
     border-radius: var(--border-radius-md);
     padding: var(--spacing-sm) var(--spacing-lg);
     margin: var(--spacing-xl) 0;
-    color: rgb(var(--text-color-rgb), 0.8);
     text-align: right;
+    color: var(--text-secondary);
     margin-left: auto;
+    margin-top: var(--spacing-xxxl);
+    margin-bottom: var(--spacing-xxxl);
   }
   
+
   .ai-message {
     align-self: flex-start;
     color: var(--text-color);
@@ -63,6 +66,7 @@
   /* Markdown formatting */
   .ai-message p {
     margin-bottom: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
     line-height: 1.6;
 }
 
