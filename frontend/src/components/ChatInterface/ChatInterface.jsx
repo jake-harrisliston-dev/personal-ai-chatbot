@@ -4,10 +4,12 @@ import ChatCard from "../ChatCard/ChatCard"
 import { api } from "../../services/api"
 import ReactMarkdown from 'react-markdown'
 
-export default function ChatInterface() {
+export default function ChatInterface(first_nessage) {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  console.log("First message recieved in chat interface: ", first_nessage)
 
   const handleSendMessage = async (message) => {
     const newUserMessage = {

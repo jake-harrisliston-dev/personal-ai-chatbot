@@ -10,12 +10,14 @@ function App() {
 
   const [showLandingTitle, setShowLandingTitle] = useState(true)
   const [showChatInterface, setShowChatInterface] = useState(false)
+  const [firstMessage, setFirstMessage] = useState(null)
   const [showModal, setShowModal] = useState(false)
 
   const handleStartConvo = (message) => {
     console.log("Message recieved in App.jsx: ", message)
     setShowLandingTitle(false)
     setShowChatInterface(true)
+    setFirstMessage(message)
     setShowModal(true)
   }
 
@@ -33,12 +35,14 @@ function App() {
       
       {showLandingTitle && 
       <LandingTitle
-        handleStartConvo={handleStartConvo}
-        />
-      }
+      handleStartConvo={handleStartConvo}
+      />
+    }
 
       {showChatInterface && 
-      <ChatInterface />
+      <ChatInterface 
+      first_message={firstMessage}
+      />
       }
 
     </div>
