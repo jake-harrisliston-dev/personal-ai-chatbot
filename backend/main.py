@@ -10,6 +10,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from services.aiService import generate_response
 from fastapi.responses import StreamingResponse
 import asyncio
+from supabase import create_client
+from pydantic import BaseModel
+from typing import Optional
 
 load_dotenv()
 
@@ -24,6 +27,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Create supabase client
+supabase = create_client(
+    os.getenv("SUPABASE_URL"),
+    os.getenv("SUPABASE_SERVICE_KEY")
+)
+
+# Pydantic model for form submission
+class FormSubmit(BaseModel):
+    name: Optional[str] = None
+    email: str
+    marketing: bool
+    terms: bool
+
+
 async def stream_generator(messages):
     try:
         for chunk in generate_response(messages):
@@ -36,22 +53,43 @@ async def stream_generator(messages):
 
 
 @app.post("/api/form-submit")
-async def form_submit(request_body: dict = Body(...)):
+async def form_submit(data: FormSubmit):
     try:
-        name = request_body.get("name")
-        email = request_body.get("email")
-        marketing = request_body.get("marketing")
-        terms = request_body.get("terms")
 
-        print(f"=== Data recieved in backend === \n - Name: {name} \n - Email: {email} \n - Marketing Opt-in: {marketing}\n - Terms: {terms}")
-        return {"message":"Data recieved successfully"}
-    
-    except HTTPException:
-        raise
+        user_check = supabase.table("leads").select("*").eq("email", data.email).execute()
+
+        if not user_check.data or len(user_check.data) == 0:
+            new_user = supabase.table("leads").insert({
+                "first_name": data.name,
+                "email": data.email,
+                "used_chatbot": True,
+                "marketing_opt_in": data.marketing,
+                "terms_agreement": data.terms,
+                "source": "Website Chatbot",
+                "last_contacted": 'now()',
+                "last_contacted_method": "Website Chatbot"
+            }).execute()
+            
+            print(f"Data added successfully: {new_user.data}")
+            
+            return {"success": "New user added"}
+
+        user = user_check.data[0]
         
+        updated_user = supabase.table("leads").update({
+            "used_chatbot": True,
+            "marketing_opt_in": data.marketing,
+            "terms_agreement": data.terms,
+            "last_contacted": "now()",
+            "last_contacted_method": "Website Chatbot"
+        }).eq('id', user['id']).execute()
 
+        print(f"User details updated: {updated_user.data}")
+        
+        return {"success": "User details updated"}
+
+            
     except Exception as e:
-        print(f"Error submitting form content: {str(e)}")
         traceback.print_exc()
         raise HTTPException(
             status_code=500,

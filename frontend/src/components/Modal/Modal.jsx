@@ -37,9 +37,8 @@ export default function Modal({ onClose }) {
 
         const response = await api.formSubmit(submitData)
 
-        console.log(response)
-
-        onClose()
+        onClose() // need to add onclose logic to start conversation. 
+        // need to ensure first message is saved in frontend, and once sign up is complete the request is sent and ChatInteraction appears
 
     }
 
