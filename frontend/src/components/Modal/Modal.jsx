@@ -7,6 +7,7 @@ export default function Modal({ onClose }) {
     const [formData, setFormData] = useState({
         name: "",
         email: "",
+        company: "",
         marketing: true,
         terms: false,
     })
@@ -28,6 +29,7 @@ export default function Modal({ onClose }) {
         
         const submitData = {
             name: formData.name || undefined,
+            business: formData.company,
             email: formData.email,
             marketing: formData.marketing,
             terms: formData.terms,
@@ -75,6 +77,16 @@ export default function Modal({ onClose }) {
                             value={formData.email}
                             onChange={handleChange}
                             required
+                        />
+                    </div>
+
+                    <div className="input-field">
+                        <label>Company (optional)</label>
+                        <input
+                            type="text"
+                            name="company"
+                            value={formData.company}
+                            onChange={handleChange}
                         />
                     </div>
 

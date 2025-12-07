@@ -37,9 +37,21 @@ supabase = create_client(
 class FormSubmit(BaseModel):
     name: Optional[str] = None
     email: str
+    business: Optional[str] = None
     marketing: bool
     terms: bool
 
+# Re-usable logic for splitting name
+def parse_name(full_name: str):
+    if not full_name:
+        return None, None
+    
+    parts = full_name.strip().split(' ', 1)
+    
+    if len(parts) == 1:
+        return parts[0], None
+    else:
+        return parts[0], parts[1]
 
 async def stream_generator(messages):
     try:
@@ -55,13 +67,17 @@ async def stream_generator(messages):
 @app.post("/api/form-submit")
 async def form_submit(data: FormSubmit):
     try:
+        
+        first_name, last_name = parse_name(data.name)
 
         user_check = supabase.table("leads").select("*").eq("email", data.email).execute()
 
-        if not user_check.data or len(user_check.data) == 0:
+        if not user_check.data:
             new_user = supabase.table("leads").insert({
-                "first_name": data.name,
+                "first_name": first_name,
+                "last_name": last_name,
                 "email": data.email,
+                "business": data.business,
                 "used_chatbot": True,
                 "marketing_opt_in": data.marketing,
                 "terms_agreement": data.terms,
@@ -75,14 +91,25 @@ async def form_submit(data: FormSubmit):
             return {"success": "New user added"}
 
         user = user_check.data[0]
-        
-        updated_user = supabase.table("leads").update({
+
+        updated_data = {
             "used_chatbot": True,
             "marketing_opt_in": data.marketing,
-            "terms_agreement": data.terms,
             "last_contacted": "now()",
             "last_contacted_method": "Website Chatbot"
-        }).eq('id', user['id']).execute()
+        }
+
+        if data.business and len(data.business) > 0:
+            updated_data["business"] = data.business
+        
+        if first_name and len(first_name) > 0:
+            updated_data["first_name"] = first_name
+        
+        if last_name and len(last_name) > 0:
+            updated_data["last_name"] = last_name
+
+        updated_user = supabase.table("leads").update(updated_data).eq('id', user['id']).execute()
+        
 
         print(f"User details updated: {updated_user.data}")
         
