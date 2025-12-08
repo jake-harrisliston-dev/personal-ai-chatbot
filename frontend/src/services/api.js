@@ -32,7 +32,7 @@ const apiCall = async (endpoint, options = {}) => {
 
 export const api = {
   aiGenerate: (data) => {
-    console.log("Sending to API:", JSON.stringify(data));
+    console.log("Sending to backend:", JSON.stringify(data));
     return apiCall(`/api/ai-generate`, {
       method: 'POST',
       body: JSON.stringify(data),

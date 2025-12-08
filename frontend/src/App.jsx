@@ -16,13 +16,15 @@ function App() {
   const [firstMessage, setFirstMessage] = useState(null)
   const [userEmail, setUserEmail] = useState(null)
 
+  // runs on first user message send. Brings up modal and stores their fist message
   const handleStartConvo = (message) => {
-    console.log("Message recieved in App.jsx: ", message)
     setFirstMessage(message)
     setShowModal(true)
   }
   
+  // runs on modal close. Stores user email for verification. Starts chat interface
   const handleModalSubmit = (submitData) => {
+    
     setUserEmail(submitData.email)
     setShowLandingTitle(false)
     setShowChatInterface(true)
@@ -51,6 +53,7 @@ function App() {
       {showChatInterface && 
       <ChatInterface 
       first_message={firstMessage}
+      email={userEmail}
       />
       }
 

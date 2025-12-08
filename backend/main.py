@@ -41,6 +41,11 @@ class FormSubmit(BaseModel):
     marketing: bool
     terms: bool
 
+# Pydantic model for ai generate
+class GenerateAIResponse(BaseModel):
+    email: str
+    data: list
+
 # Re-usable logic for splitting name
 def parse_name(full_name: str):
     if not full_name:
@@ -126,16 +131,26 @@ async def form_submit(data: FormSubmit):
 
 
 @app.post("/api/ai-generate")
-async def ai_generate(request_body: dict = Body(...)):
+async def ai_generate(data: GenerateAIResponse):
     try:
         # Get the user prompt from the frontend
-        messages = request_body.get("data")
+        messages = data.data
+        email = data.email
+
+        if not email:
+            raise HTTPException(status_code=401, detail="Email required.")
+
+        check_email = supabase.table("leads").select("*").eq("email", email).execute()
+
+        if not check_email.data:
+            raise HTTPException(status_code=401, detail="Email not registered. Submit form first.")
+
         if not messages:
-            raise HTTPException(status_code=400, detail="Message cannot be empty")
+            raise HTTPException(status_code=400, detail="Message cannot be empty.")
 
         # Ensure messages is an array
         if not isinstance(messages, list):
-            raise HTTPException(status_code=400, detail="Messages must be an array")
+            raise HTTPException(status_code=400, detail="Messages must be an array.")
 
         # Clean messages (remove timestamp, keep only role + content)
         try: 
