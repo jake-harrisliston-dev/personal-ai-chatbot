@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./chat-interface.css"
 import ChatCard from "../ChatCard/ChatCard"
 import { api } from "../../services/api"
 import ReactMarkdown from 'react-markdown'
 
-export default function ChatInterface(first_nessage) {
+export default function ChatInterface({ first_message }) {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const hasSentFirstMessage = useRef(false)
 
-  console.log("First message recieved in chat interface: ", first_nessage)
+  useEffect(() => {
+    if (first_message && !hasSentFirstMessage.current) {
+      hasSentFirstMessage.current = true
+      handleSendMessage(first_message)
+    }
+  }, [first_message])
 
   const handleSendMessage = async (message) => {
     const newUserMessage = {
@@ -41,7 +47,7 @@ export default function ChatInterface(first_nessage) {
           const {done, value} = await reader.read()
           if (done) break
 
-          const chunk = decoder.decode(value)
+          const chunk = decoder.decode(value, {stream: true})
 
           setMessages(prev => {
             const updated = [...prev]

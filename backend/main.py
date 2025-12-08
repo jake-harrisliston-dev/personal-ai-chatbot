@@ -56,8 +56,8 @@ def parse_name(full_name: str):
 async def stream_generator(messages):
     try:
         for chunk in generate_response(messages):
-            yield f"{chunk}"
-            await asyncio.sleep(0.00001)
+            yield chunk
+            await asyncio.sleep(0.01)
     except Exception as e:
         print(f"Error during stream: {str(e)}")
         traceback.print_exc()

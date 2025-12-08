@@ -41,7 +41,6 @@ NOTES ON FORMATTING:
 - Use bullet points with proper markdown: 
   - Like this (dash + space)
   * Or this (asterisk + space)
-- Use headings when appropriate to structure responses
 
 
 TONE:

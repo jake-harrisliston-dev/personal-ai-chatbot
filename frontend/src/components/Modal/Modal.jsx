@@ -130,7 +130,6 @@ export default function Modal({ onClose, onSubmit }) {
                         type="submit" 
                         disabled={isLoading}
                         >
-                        Submit
                         {isLoading ? 'Submitting...' : 'Submit'}
                     </button>
 
