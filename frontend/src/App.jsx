@@ -10,15 +10,23 @@ function App() {
 
   const [showLandingTitle, setShowLandingTitle] = useState(true)
   const [showChatInterface, setShowChatInterface] = useState(false)
-  const [firstMessage, setFirstMessage] = useState(null)
   const [showModal, setShowModal] = useState(false)
+
+  // User details and credentials
+  const [firstMessage, setFirstMessage] = useState(null)
+  const [userEmail, setUserEmail] = useState(null)
 
   const handleStartConvo = (message) => {
     console.log("Message recieved in App.jsx: ", message)
-    setShowLandingTitle(false)
-    setShowChatInterface(true)
     setFirstMessage(message)
     setShowModal(true)
+  }
+  
+  const handleModalSubmit = (submitData) => {
+    setUserEmail(submitData.email)
+    setShowLandingTitle(false)
+    setShowChatInterface(true)
+    console.log("User email logged in App.jsx: ", submitData.email)
   }
 
   
@@ -30,6 +38,7 @@ function App() {
       {showModal && 
       <Modal
       onClose={() => setShowModal(false)}
+      onSubmit={handleModalSubmit}
       />
       }
       

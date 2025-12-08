@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./modal.css"
 import { api } from "../../services/api";
 
-export default function Modal({ onClose }) {
+export default function Modal({ onClose, onSubmit }) {
 
     const [formData, setFormData] = useState({
         name: "",
@@ -37,10 +37,16 @@ export default function Modal({ onClose }) {
 
         console.log("Data leaving Modal.jsx: ", submitData)
 
-        const response = await api.formSubmit(submitData)
+        try {
+            const response = await api.formSubmit(submitData)
 
-        onClose() // need to add onclose logic to start conversation. 
-        // need to ensure first message is saved in frontend, and once sign up is complete the request is sent and ChatInteraction appears
+            onSubmit(submitData)
+            onClose() 
+        } catch (error) {
+            console.error("Error submitting form:", error)
+            setError("Failed to submit form")
+        }
+        
 
     }
 
@@ -53,11 +59,11 @@ export default function Modal({ onClose }) {
                 <p className="form-title">Your email is required for this service</p>
 
                 <form onSubmit={handleSubmit}>
-                    {/*{error && (
+                    {error && (
                     <div className="error-message">
                         {error}
                     </div>
-                    )}*/}
+                    )}
 
                     <div className="input-field">
                         <label>Name</label>
@@ -120,13 +126,12 @@ export default function Modal({ onClose }) {
                         </div>
                     </div>
 
-                    <button className="modal-submit-btn">
-                        Submit
-                        {/* type="submit" 
+                    <button className="modal-submit-btn"
+                        type="submit" 
                         disabled={isLoading}
-                        className="btn btn-secondary"
                         >
-                        {isLoading ? 'Submitting...' : 'Submit'} */}
+                        Submit
+                        {isLoading ? 'Submitting...' : 'Submit'}
                     </button>
 
                     <div className="button-sub-text-wrap">
