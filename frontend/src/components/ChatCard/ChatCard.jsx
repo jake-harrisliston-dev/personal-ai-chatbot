@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import Icon from '../Icon/Icon'
 import "./chat-card.css"
 
-export default function ChatCard({ onSendMessage, placeholder }) {
+export default function ChatCard({ onSendMessage, placeholder, autoMessage }) {
   const [message, setMessage] = useState('')
   const textareaRef = useRef(null)
 
@@ -13,6 +13,11 @@ export default function ChatCard({ onSendMessage, placeholder }) {
       textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px'
     }
   }, [message])
+
+  // Change message value when preset pressed in LandingTitle
+  useEffect(() => {
+    setMessage(autoMessage)
+  }, [autoMessage])
 
   const handleSend = () => {
     if (message.trim()) {
