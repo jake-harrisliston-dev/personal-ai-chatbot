@@ -8,7 +8,7 @@ export default function ChatInterface({ first_message, email }) {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const hasSentFirstMessage = useRef(false)
+  const hasSentFirstMessage = useRef(false);
 
   useEffect(() => {
     if (first_message && !hasSentFirstMessage.current) {

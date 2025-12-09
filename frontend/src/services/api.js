@@ -14,7 +14,7 @@ const apiCall = async (endpoint, options = {}) => {
       
       // Handle 401 (session expired)
       if (response.status === 401) {
-        throw new Error('Session expired');
+        throw new Error('Session expired. Try refreshing the page to continue.');
       }
       
       if (!response.ok) {

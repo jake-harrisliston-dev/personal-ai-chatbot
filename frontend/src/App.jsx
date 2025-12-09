@@ -31,8 +31,6 @@ function App() {
     console.log("User email logged in App.jsx: ", submitData.email)
   }
 
-  
-
   return (
     <div className="chat-page">
         <div className='gradient-overlay'></div>
