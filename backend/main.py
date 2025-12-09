@@ -152,6 +152,10 @@ async def ai_generate(data: GenerateAIResponse):
 
         if not messages:
             raise HTTPException(status_code=400, detail="Message cannot be empty.")
+        
+        # Ensure messages is an array
+        if not isinstance(messages, list):
+            raise HTTPException(status_code=400, detail="Messages must be an array.")
 
         if not email:
             raise HTTPException(status_code=401, detail="Email required.")
@@ -165,10 +169,6 @@ async def ai_generate(data: GenerateAIResponse):
         user = check_email.data[0]
         user_id = user["id"]
 
-        # Ensure messages is an array
-        if not isinstance(messages, list):
-            raise HTTPException(status_code=400, detail="Messages must be an array.")
-
         # Clean messages (remove timestamp, keep only role + content)
         try: 
             cleaned_messages = [
@@ -176,34 +176,38 @@ async def ai_generate(data: GenerateAIResponse):
                 for msg in messages
             ]
 
-            print(f"Messages: {messages}")
-
-
         except (KeyError, TypeError) as e:
             raise HTTPException(
                 status_code=400,
                 detail=f"Invalid message format: {str(e)}"
             )
         
-        try:
-            # Extract last user message and save to DB
-            last_user_message = None
-            for msg in reversed(cleaned_messages):
-                if msg["role"] == "user":
-                    last_user_message = msg["content"]
-                    break
-            
-            if not last_user_message:
-                raise HTTPException(status_code=400, detail="No user message found.")
+        # Extract last user message and save to DB
+        last_user_message = None
+        for msg in reversed(cleaned_messages):
+            if msg["role"] == "user":
+                last_user_message = msg["content"]
+                break
+        
+        if not last_user_message:
+            raise HTTPException(status_code=400, detail="No user message found.")
 
+        try:
             log_usr_msg = supabase.table("lead_chatbot_comms").insert({
                 "lead_id": user_id,
                 "role": "user",
                 "content": last_user_message
                 }).execute()
-
         except Exception as e:
-            print("Failed to log conversation")
+            print(f"Failed to save user message: {str(e)}")
+            raise HTTPException(500, "Failed to save message")
+
+        # Check user has not exceeded message limit
+        check_comms = supabase.table("lead_chatbot_comms").select("*", count="exact").eq("lead_id", user_id).execute()
+        message_count = check_comms.count
+        if message_count >= 31:
+            raise HTTPException(429, "Message limit reached. Book a call to continue.")
+    
 
         return StreamingResponse(
             stream_generator(cleaned_messages, user_id),
