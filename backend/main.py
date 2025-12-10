@@ -198,6 +198,7 @@ async def ai_generate(data: GenerateAIResponse):
                 "role": "user",
                 "content": last_user_message
                 }).execute()
+
         except Exception as e:
             print(f"Failed to save user message: {str(e)}")
             raise HTTPException(500, "Failed to save message")

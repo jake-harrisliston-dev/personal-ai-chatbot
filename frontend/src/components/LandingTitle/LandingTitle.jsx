@@ -8,43 +8,46 @@ export default function LandingTitle ({ handleStartConvo }) {
     const [autoMessage, setAutoMessage] = useState("")
 
     const presets = {
-        sourcing_leads: "I've having trouble sourcing leads",
-        follow_ups: "I'm having problems following up with leads",
-        customer_service: "I'm having problems maintaining high level customer service",
+        data_entry: "My team and I spend ages on data entry. How can AI help save us time?",
+        follow_ups: "I'm having problems following up with leads...is there a way AI can help?",
+        customer_service: "How can I use AI to support with customer service in my business?",
     }
 
     return(
         <div className="landing-title-wrap">
-            <div className="chat-header">
-                <h1>Discover AI in your business</h1>
-                <p className="subtitle">
-                    Describe your business to discover how artificial intelligence can benefit 
-                </p>
-            </div>
+            <div className="landing-title-hero-wrap">
 
-            <div className="suggestions-wrap">
-                <div className="hor-wrap">
-                    
-                    <div className="suggestion-button" 
-                    onClick={() => setAutoMessage(presets.follow_ups)}
-                    >
-                        Following up
+                <div className="chat-header">
+                    <h1>Discover AI in your business</h1>
+                    <p className="subtitle">
+                        Describe your business to discover how artificial intelligence can benefit 
+                    </p>
+                </div>
+
+                <div className="suggestions-wrap">
+                    <div className="hor-wrap">
+                        
+                        <div className="suggestion-button" 
+                        onClick={() => setAutoMessage(presets.follow_ups)}
+                        >
+                            Follow ups
+                        </div>
+
+                        <div className="suggestion-button"
+                        onClick={() => setAutoMessage(presets.data_entry)}
+                        >
+                            Data entry
+                        </div>
+
                     </div>
-
                     <div className="suggestion-button"
-                    onClick={() => setAutoMessage(presets.sourcing_leads)}
+                    onClick={() => setAutoMessage(presets.customer_service)}
                     >
-                        Sourcing leads
+                        Customer service
                     </div>
-
                 </div>
-                <div className="suggestion-button"
-                onClick={() => setAutoMessage(presets.customer_service)}
-                >
-                    Handling customer service
-                </div>
-            </div>
         
+            </div>
             <ChatCard 
             onSendMessage={handleStartConvo}
             placeholder={"Describe your business..."} 

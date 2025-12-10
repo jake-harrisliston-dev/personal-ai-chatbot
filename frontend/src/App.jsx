@@ -1,6 +1,5 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import './App.css'
-import Icon from './components/Icon/Icon'
 
 import LandingTitle from './components/LandingTitle/LandingTitle'
 import Modal from './components/Modal/Modal'

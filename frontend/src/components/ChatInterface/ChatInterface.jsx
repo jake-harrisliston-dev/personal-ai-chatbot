@@ -87,6 +87,7 @@ export default function ChatInterface({ first_message, email }) {
               )}
             </div>
             ))}
+            <div className="gradient-orb"></div>
         </div>
       </div>
 
