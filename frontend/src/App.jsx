@@ -5,6 +5,8 @@ import LandingTitle from './components/LandingTitle/LandingTitle'
 import Modal from './components/Modal/Modal'
 import ChatInterface from './components/ChatInterface/ChatInterface'
 
+import Navbar from './components/Navbar/Navbar'
+
 function App() {
 
   const [showLandingTitle, setShowLandingTitle] = useState(true)
@@ -32,7 +34,10 @@ function App() {
 
   return (
     <div className="chat-page">
-        <div className='gradient-overlay'></div>
+      
+      <Navbar />
+
+      <div className='gradient-overlay'></div>
       
       {showModal && 
       <Modal

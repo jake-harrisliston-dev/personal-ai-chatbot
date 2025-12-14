@@ -8,7 +8,7 @@ export default function LandingTitle ({ handleStartConvo }) {
     const [autoMessage, setAutoMessage] = useState("")
 
     const presets = {
-        data_entry: "My team and I spend ages on data entry. How can AI help save us time?",
+        data_entry: "My team spend lots of time and resources on data entry. How can AI help save us time?",
         follow_ups: "I'm having problems following up with leads...is there a way AI can help?",
         customer_service: "How can I use AI to support with customer service in my business?",
     }
@@ -20,7 +20,7 @@ export default function LandingTitle ({ handleStartConvo }) {
                 <div className="chat-header">
                     <h1>Discover AI in your business</h1>
                     <p className="subtitle">
-                        Describe your business to discover how artificial intelligence can benefit 
+                        Describe your business to learn how artificial intelligence can benefit your business
                     </p>
                 </div>
 

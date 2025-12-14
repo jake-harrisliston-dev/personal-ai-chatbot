@@ -14,7 +14,7 @@
 }
 
 .modal {
-    width: 700px;
+    width: 600px;
     padding: var(--spacing-xxxl) var(--spacing-xxxl);
     background-color: var(--card-color);
     border-radius: var(--border-radius-md);
