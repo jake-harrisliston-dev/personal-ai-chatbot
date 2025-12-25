@@ -17,6 +17,12 @@ export default function ChatCard({ onSendMessage, onMessageChange, placeholder, 
   // Change message value when preset pressed in LandingTitle
   useEffect(() => {
     setMessage(autoMessage)
+
+    // And refocus to end of message 
+    if (autoMessage && textareaRef.current) {
+      textareaRef.current.focus()
+    }
+
   }, [autoMessage])
 
   // Notify LandingTitle when the message contents changes
@@ -49,6 +55,7 @@ export default function ChatCard({ onSendMessage, onMessageChange, placeholder, 
     <div className="chat-card">
       <div className="input-container">
         <textarea
+          autoFocus
           ref={textareaRef}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
