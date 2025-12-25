@@ -104,8 +104,6 @@ async def form_submit(data: FormSubmit):
                 "last_contacted_method": "Website Chatbot"
             }).execute()
             
-            print(f"Data added successfully: {new_user.data}")
-            
             return {"success": "New user added"}
 
         user = user_check.data[0]
@@ -128,9 +126,6 @@ async def form_submit(data: FormSubmit):
             updated_data["last_name"] = last_name
 
         updated_user = supabase.table("leads").update(updated_data).eq('id', user['id']).execute()
-        
-
-        print(f"User details updated: {updated_user.data}")
         
         return {"success": "User details updated"}
 

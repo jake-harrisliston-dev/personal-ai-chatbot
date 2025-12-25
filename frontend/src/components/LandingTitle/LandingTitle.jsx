@@ -6,11 +6,22 @@ import ChatCard from "../ChatCard/ChatCard"
 export default function LandingTitle ({ handleStartConvo }) {
 
     const [autoMessage, setAutoMessage] = useState("")
+    const [currentMessage, setCurrentMessage] = useState("")
 
     const presets = {
         data_entry: "My team spend lots of time and resources on data entry. How can AI help save us time?",
         follow_ups: "I'm having problems following up with leads...is there a way AI can help?",
         customer_service: "How can I use AI to support with customer service in my business?",
+    }
+
+    // Check if the preset is active
+    const isPresetActive = (presetKey) => {
+        return currentMessage.startsWith(presets[presetKey]);
+    }
+
+    // Handle message change from ChatCard
+    const handleMessageChange = (message) => {
+        setCurrentMessage(message);
     }
 
     return(
@@ -20,27 +31,27 @@ export default function LandingTitle ({ handleStartConvo }) {
                 <div className="chat-header">
                     <h1>Discover AI in your business</h1>
                     <p className="subtitle">
-                        Describe your business to learn how artificial intelligence can benefit your business
+                        Describe your business to learn how artificial intelligence can benefit your company
                     </p>
                 </div>
 
                 <div className="suggestions-wrap">
                     <div className="hor-wrap">
                         
-                        <div className="suggestion-button" 
+                        <div className={`suggestion-button ${isPresetActive('follow_ups') ? 'active' : ''}`}
                         onClick={() => setAutoMessage(presets.follow_ups)}
                         >
                             Follow ups
                         </div>
 
-                        <div className="suggestion-button"
+                        <div className={`suggestion-button ${isPresetActive('data_entry') ? 'active' : ''}`}
                         onClick={() => setAutoMessage(presets.data_entry)}
                         >
                             Data entry
                         </div>
 
                     </div>
-                    <div className="suggestion-button"
+                    <div className={`suggestion-button ${isPresetActive('customer_service') ? 'active' : ''}`}
                     onClick={() => setAutoMessage(presets.customer_service)}
                     >
                         Customer service
@@ -50,6 +61,7 @@ export default function LandingTitle ({ handleStartConvo }) {
             </div>
             <ChatCard 
             onSendMessage={handleStartConvo}
+            onMessageChange={handleMessageChange}
             placeholder={"Describe your business..."} 
             autoMessage={autoMessage}
             />

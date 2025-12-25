@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import Icon from '../Icon/Icon'
 import "./chat-card.css"
 
-export default function ChatCard({ onSendMessage, placeholder, autoMessage }) {
+export default function ChatCard({ onSendMessage, onMessageChange, placeholder, autoMessage }) {
   const [message, setMessage] = useState('')
   const textareaRef = useRef(null)
 
@@ -18,6 +18,13 @@ export default function ChatCard({ onSendMessage, placeholder, autoMessage }) {
   useEffect(() => {
     setMessage(autoMessage)
   }, [autoMessage])
+
+  // Notify LandingTitle when the message contents changes
+  useEffect(() => {
+    if (onMessageChange) {
+      onMessageChange(message);
+    }
+  }, [message, onMessageChange])
 
   const handleSend = () => {
     if (message.trim()) {

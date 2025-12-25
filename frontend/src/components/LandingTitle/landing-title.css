@@ -64,6 +64,12 @@
     margin: var(--spacing-xs);
     flex-shrink: 0;
     flex-grow: 0;
+  }
+  
+  .suggestion-button.active {
+    color: rgb(var(--text-color-rgb), 1);
+    background-color: rgb(var(--text-color-rgb), 0.05);
+    border: 1px solid rgb(var(--text-color-rgb), 0.2);
 }
 
 .suggestion-button:hover {
