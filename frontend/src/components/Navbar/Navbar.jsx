@@ -11,9 +11,9 @@ export default function Navbar() {
                 
                 <div className="nav-button-wrap">
                     
-                    <div className="nav-button" link="https://www.jake-harrisliston.dev/" >My Portfolio</div>
+                    <div className="nav-button" >About</div>
                     
-                    <div className="nav-button highlight">Get Started</div>
+                    <div className="nav-button-highlight">Get Started</div>
 
                 </div>
             </div>

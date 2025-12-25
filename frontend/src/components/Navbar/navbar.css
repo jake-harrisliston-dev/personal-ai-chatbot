@@ -23,7 +23,9 @@
     width: 50px;
     height: 50px;
     border-radius: 100000px;
-    background-color: red;
+    background-image: url('../../assets/images/personal-headshot.jpg');
+    background-size: cover;
+    background-position: center;
     margin-left: 0;
     margin-right: auto;
     margin-top: var(--spacing-xs);
@@ -33,17 +35,29 @@
 .nav-button-wrap {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
     gap: var(--spacing-md)
 }
 
 .nav-button {
     padding: var(--spacing-lg) var(--spacing-xxl);
-    margin-right: var(--spacing-md);
     color: rgb(var(--text-color-rgb), 0.8);
     cursor: pointer;
-
 }
 
 .nav-button:hover {
     color: rgb(var(--text-color-rgb), 1)
+}
+
+.nav-button-highlight {
+    background-color: rgb(var(--text-color-rgb), 0.9);
+    color: var(--background-color);
+    padding: var(--spacing-xs) var(--spacing-xl);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+}
+
+.nav-button-highlight:hover {
+    background-color: rgb(var(--text-color-rgb), 1);
 }
