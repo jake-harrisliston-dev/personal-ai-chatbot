@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from "react";
 import './navbar.css'
 
-export default function Navbar({ handleShowMeetingModal }) {
-
-    const [showMeetingModal, setShowMeetingModal] = useState(false);
-
-    useEffect(() => {
-        if (handleShowMeetingModal) {
-            handleShowMeetingModal(showMeetingModal)
-        }
-    }, [showMeetingModal, handleShowMeetingModal])
+export default function Navbar({ onOpenModal }) {
 
     return(
         <div className="navbar">
@@ -23,7 +15,7 @@ export default function Navbar({ handleShowMeetingModal }) {
                     
                     <div 
                     className="nav-button-highlight"
-                    onClick={() => setShowMeetingModal(true)}
+                    onClick={onOpenModal}
                     >
                         Get Started
                     

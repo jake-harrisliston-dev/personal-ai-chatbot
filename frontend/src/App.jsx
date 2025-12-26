@@ -34,22 +34,27 @@ function App() {
     console.log("User email logged in App.jsx: ", submitData.email)
   }
 
-  const handleShowMeetingModal = (showMeetingModal) => {
-    setShowMeetingModal(showMeetingModal)
-    console.log(showMeetingModal)
+  const handleShowMeetingModal = () => {
+    setShowMeetingModal(true)
+  }
+
+  const handleCloseMeetingModal = () => {
+    setShowMeetingModal(false)
   }
 
   return (
     <div className="chat-page">
       
       <Navbar 
-      handleShowMeetingModal={handleShowMeetingModal}
+      onOpenModal={handleShowMeetingModal}
       />
 
       <div className='gradient-overlay'></div>
 
       {showMeetingModal && 
-      <MeetingModal />
+      <MeetingModal 
+      onClose={handleCloseMeetingModal}
+      />
       }
       
       {showModal && 
