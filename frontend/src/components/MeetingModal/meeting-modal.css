@@ -27,5 +27,25 @@
     line-height: var(--line-height-tight);
     color: var(--text-color);
     font-weight: var(--font-weight-bold);
-    margin-bottom: var(--spacing-xl);
+}
+
+.hor-div {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: left;
+    margin-bottom: var(--spacing-xxl);
+
+}
+
+.close-button {
+    margin-left: auto;
+    cursor: pointer;
+    color: rgb(var(--text-color-rgb), 0.7);
+    padding: var(--spacing-sm)
+}
+
+.close-button:hover {
+    color: rgb(var(--text-color-rgb), 1);
 }

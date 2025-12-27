@@ -35,7 +35,7 @@ export default function Modal({ onClose, onSubmit }) {
             terms: formData.terms,
         }
 
-        console.log("Data leaving Modal.jsx: ", submitData)
+        setIsLoading(true)
 
         try {
             const response = await api.formSubmit(submitData)
@@ -45,6 +45,8 @@ export default function Modal({ onClose, onSubmit }) {
         } catch (error) {
             console.error("Error submitting form:", error)
             setError("Failed to submit form")
+        } finally {
+            setIsLoading(false)
         }
         
 

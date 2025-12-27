@@ -1,16 +1,16 @@
 // Icon.js
 import { 
     ArrowBigUp,
-    Plus,
     Sparkles,
-    Mic
+    Mic,
+    X
     } from "lucide-react";
   
   const ICON_MAP = {
     submitButton: ArrowBigUp,
-    plus: Plus,
     ai: Sparkles,
     mic: Mic,
+    cross: X,
   };
   
   export default function Icon({ name, size = 20, color = "var(--text-color)", marginLeft = "o", marginRight = "0", ...props }) {
