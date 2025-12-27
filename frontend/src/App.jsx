@@ -27,11 +27,9 @@ function App() {
   
   // runs on modal close. Stores user email for verification. Starts chat interface
   const handleModalSubmit = (submitData) => {
-    
     setUserEmail(submitData.email)
     setShowLandingTitle(false)
     setShowChatInterface(true)
-    console.log("User email logged in App.jsx: ", submitData.email)
   }
 
   const handleShowMeetingModal = () => {
@@ -74,6 +72,7 @@ function App() {
       <ChatInterface 
       first_message={firstMessage}
       email={userEmail}
+      aiOpenModal={handleShowMeetingModal}
       />
       }
 

@@ -4,7 +4,7 @@ import ChatCard from "../ChatCard/ChatCard"
 import { api } from "../../services/api"
 import ReactMarkdown from 'react-markdown'
 
-export default function ChatInterface({ first_message, email }) {
+export default function ChatInterface({ first_message, email, aiOpenModal }) {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -49,14 +49,21 @@ export default function ChatInterface({ first_message, email }) {
 
           const chunk = decoder.decode(value, {stream: true})
 
-          setMessages(prev => {
-            const updated = [...prev]
-            updated[aiMessageIndex] ={
-              ...updated[aiMessageIndex],
-              content: updated[aiMessageIndex].content + chunk
-            }
-            return updated
-          })
+          const data = JSON.parse(chunk.replace("data: ", "").trim())
+
+          if (data.type === "response") {
+            setMessages(prev => {
+              const updated = [...prev]
+              updated[aiMessageIndex] ={
+                ...updated[aiMessageIndex],
+                content: updated[aiMessageIndex].content + data.content
+              }
+              return updated
+            })
+          }
+          else if (data.type === "tool_use") {
+            aiOpenModal()
+          }
         }
 
         setIsLoading(false);

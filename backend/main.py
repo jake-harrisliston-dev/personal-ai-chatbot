@@ -64,17 +64,14 @@ async def stream_generator(messages, user_id):
 
     try:
         for chunk in generate_response(messages):
-            chunk = chunk.strip()
-            chunk = chunk.replace("data: ", "", 1)
-            data = json.loads(chunk)
+            data = json.loads(chunk.removeprefix("data: ").strip())
+
             if data["type"] == "response":
-                print(f"Chunk type: {data["type"]}\nChunk Content: {data["content"]}\n\n======\n\n")
                 ai_response += data["content"]
-                yield data['content']
+                yield chunk
                 await asyncio.sleep(0.01)
             elif data["type"] == "tool_use":
-                print(f"Chunk type: {data["type"]}\nChunk Content: {data["name"]}\n\n======\n\n")
-                yield data['name']
+                yield chunk
                 await asyncio.sleep(0.01)
 
     except Exception as e:
