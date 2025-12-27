@@ -11,6 +11,7 @@ import asyncio
 from supabase import create_client
 from pydantic import BaseModel
 from typing import Any, Optional
+import json
 
 load_dotenv()
 
@@ -63,9 +64,19 @@ async def stream_generator(messages, user_id):
 
     try:
         for chunk in generate_response(messages):
-            ai_response += chunk
-            yield chunk
-            await asyncio.sleep(0.01)
+            chunk = chunk.strip()
+            chunk = chunk.replace("data: ", "", 1)
+            data = json.loads(chunk)
+            if data["type"] == "response":
+                print(f"Chunk type: {data["type"]}\nChunk Content: {data["content"]}\n\n======\n\n")
+                ai_response += data["content"]
+                yield data['content']
+                await asyncio.sleep(0.01)
+            elif data["type"] == "tool_use":
+                print(f"Chunk type: {data["type"]}\nChunk Content: {data["name"]}\n\n======\n\n")
+                yield data['name']
+                await asyncio.sleep(0.01)
+
     except Exception as e:
         print(f"Error during stream: {str(e)}")
         traceback.print_exc()
