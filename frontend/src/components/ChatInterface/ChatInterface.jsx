@@ -62,7 +62,9 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
             })
           }
           else if (data.type === "tool_use") {
-            aiOpenModal()
+            setTimeout(() => {
+              aiOpenModal()
+            }, 750)
           }
         }
 
@@ -70,6 +72,21 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
         return;
       } catch (error) {
         console.error('Error parsing AI response: ', error)
+
+        if (error.status === 429) {
+          setMessages(prev => [...prev, {
+            role: 'assistant',
+            content: "Sorry, but our conversation has now exceeded it's maximum length. You can book a call with Jake to continue.",
+            timestamp: new Date()
+          }]);
+
+          console.log('caught it')
+          setTimeout(() => {
+          aiOpenModal()
+          }, 1000);
+          return;
+        }
+
         setMessages(prev => [...prev, {
           role: 'assistant',
           content: 'Error generating AI response: ' + error.message,

@@ -11,13 +11,26 @@ const apiCall = async (endpoint, options = {}) => {
           ...options.headers,
         },
       });
+
+      console.log(response)
       
-      // Handle 401 (session expired)
-      if (response.status === 401) {
-        throw new Error('Session expired. Try refreshing the page to continue.');
-      }
       
       if (!response.ok) {
+
+        // Handle 401 (session expired)
+        if (response.status === 401) {
+          throw new Error('Session expired. Try refreshing the page to continue.');
+        }
+
+        // handle 429 error
+        if (response.status === 429) {
+          console.log('CAUGHT 429 error')
+          const error = await response.json();
+          const limitError = new Error(error.detail || 'Message limit reached');
+          limitError.status = 429;
+          throw limitError;
+        }
+
         const error = await response.json();
         throw new Error(error.detail || 'API request failed');
       }
