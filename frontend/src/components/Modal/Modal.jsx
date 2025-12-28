@@ -28,7 +28,7 @@ export default function Modal({ onClose, onSubmit }) {
         e.preventDefault()
         
         const submitData = {
-            name: formData.name || undefined,
+            name: formData.name,
             business: formData.company,
             email: formData.email,
             marketing: formData.marketing,

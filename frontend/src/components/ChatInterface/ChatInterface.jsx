@@ -12,6 +12,9 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
   const messageEndRef = useRef(null);
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false)
 
+  // Add footer to end of first response
+  const [hasRecievedResponse, setHasRecievedResponse] = useState(false)
+
   useEffect(() => {
     if (first_message && !hasSentFirstMessage.current) {
       hasSentFirstMessage.current = true
@@ -54,9 +57,9 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
         while(true) {
           const {done, value} = await reader.read()
           if (done) break
-
+          
           const chunk = decoder.decode(value, {stream: true})
-
+          
           const data = JSON.parse(chunk.replace("data: ", "").trim())
 
           if (data.type === "response") {
@@ -77,6 +80,24 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
         }
 
         setIsLoading(false);
+
+        if (!hasRecievedResponse) {
+
+          setHasRecievedResponse(true)
+
+          setMessages(prev => {
+            const appendFirstMessage = [...prev]
+            appendFirstMessage[aiMessageIndex] ={
+              ...appendFirstMessage[aiMessageIndex],
+              content: appendFirstMessage[aiMessageIndex].content + 
+                "\n\n---\n\n" +
+                "\n\n*Please note: I'm an AI assistant providing general information only. " +
+                "This is not professional advice. Please verify all information independently. " +
+                "If you require more specific advice, I can assist you in booking a meeting with Jake.*" 
+            }
+            return appendFirstMessage
+          })
+        }
         return;
       } catch (error) {
         console.error('Error parsing AI response: ', error)
@@ -88,7 +109,6 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
             timestamp: new Date()
           }]);
 
-          console.log('caught it')
           setTimeout(() => {
           aiOpenModal()
           }, 1000);
@@ -103,8 +123,7 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
         setIsLoading(false);
         return;
       }
-
-  };
+    };
 
   useEffect(() => {
     if (shouldScrollToBottom) {

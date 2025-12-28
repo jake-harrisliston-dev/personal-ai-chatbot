@@ -9,7 +9,7 @@ export default function LandingTitle ({ handleStartConvo }) {
     const [currentMessage, setCurrentMessage] = useState("")
 
     const presets = {
-        data_entry: "My team spend lots of time and resources on data entry. How can AI help save us time? ",
+        data_entry: "My team spends a lot of time on data entry. How can AI help save us time? ",
         follow_ups: "I'm having problems following up with leads...is there a way AI can help? ",
         customer_service: "How can I use AI to support with customer service in my business? ",
     }
