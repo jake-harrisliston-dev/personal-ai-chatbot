@@ -9,6 +9,8 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const hasSentFirstMessage = useRef(false);
+  const messageEndRef = useRef(null);
+  const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false)
 
   useEffect(() => {
     if (first_message && !hasSentFirstMessage.current) {
@@ -16,6 +18,11 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
       handleSendMessage(first_message)
     }
   }, [first_message])
+
+  const scrollToBottom = () => {
+    console.log("Scroll to bottom function called")
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }
 
   const handleSendMessage = async (message) => {
     const newUserMessage = {
@@ -35,6 +42,7 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
       timestamp: new Date()
     }]);
     
+    setShouldScrollToBottom(true)
     setIsLoading(true)
 
     // Send message to API
@@ -98,6 +106,13 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
 
   };
 
+  useEffect(() => {
+    if (shouldScrollToBottom) {
+      scrollToBottom();
+      setShouldScrollToBottom(false)
+    }
+  }, [messages, shouldScrollToBottom]);
+
   return (
     <div className="chat-interface-wrap">
       <div className="chat-section-wrap">
@@ -111,7 +126,7 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
               )}
             </div>
             ))}
-            <div className="gradient-orb"></div>
+            <div ref={messageEndRef} className="gradient-orb"></div>
         </div>
       </div>
 
