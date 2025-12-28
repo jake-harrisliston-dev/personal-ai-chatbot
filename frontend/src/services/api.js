@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8000';
+const API_URL = import.meta.env.VITE_API_URL;
 
 // Generic API call function
 const apiCall = async (endpoint, options = {}) => {
@@ -13,7 +13,6 @@ const apiCall = async (endpoint, options = {}) => {
       });
 
       console.log(response)
-      
       
       if (!response.ok) {
 
