@@ -47,12 +47,10 @@
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
     padding: var(--spacing-sm) var(--spacing-lg);
-    margin: var(--spacing-xl) 0;
+    margin: var(--spacing-xxxl) 0;
     text-align: right;
     color: var(--text-secondary);
     margin-left: auto;
-    margin-top: var(--spacing-xxxl);
-    margin-bottom: var(--spacing-xxxl);
   }
   
 
@@ -90,4 +88,31 @@
 .ai-message h1, .ai-message h2, .ai-message h3 {
   margin-top: var(--spacing-lg);
   margin-bottom: var(--spacing-sm);
+}
+
+
+.error-message {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  margin: var(--spacing-xxxl) 0;
+  border: 1px solid rgb(var(--error-color-rgb), 1);
+  border-radius: 8px;
+  background: rgb(var(--error-color-rgb), 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.retry-button {
+  padding: var(--spacing-sm) var(--spacing-xl);
+  font-size: var(--font-size-xs);
+  background: rgb(var(--error-color-rgb), 0.8);
+  color: var(--text-color);
+  border: none;
+  border-radius: var(--spacing-xs);
+  cursor: pointer;
+}
+
+.retry-button:hover {
+  background: rgb(var(--error-color-rgb), 1);
 }

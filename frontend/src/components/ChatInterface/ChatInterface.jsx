@@ -15,6 +15,10 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
   // Add footer to end of first response
   const [hasRecievedResponse, setHasRecievedResponse] = useState(false)
 
+  // Error handling
+  const [error, setError] = useState(null);
+  const [lastFailedMessage, setLastFailedMessage] = useState(null);
+
   useEffect(() => {
     if (first_message && !hasSentFirstMessage.current) {
       hasSentFirstMessage.current = true
@@ -115,15 +119,27 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
           return;
         }
 
-        setMessages(prev => [...prev, {
-          role: 'assistant',
-          content: 'Error generating AI response: ' + error.message,
-          timestamp: new Date()
-        }]);
-        setIsLoading(false);
+        // setMessages(prev => [...prev, {
+        //   role: 'assistant',
+        //   content: 'Error generating AI response: ' + error.message,
+        //   timestamp: new Date()
+        // }]);
+        // setIsLoading(false);
+
+        setMessages(prev => prev.slice(0, -1))
+        setError(error.message || 'Something went wrong')
+        setLastFailedMessage(message)
+        setIsLoading(false)
         return;
       }
     };
+  
+  const handleRetry = () => {
+    if (lastFailedMessage) {
+      handleSendMessage(lastFailedMessage)
+      setError(null)
+    }
+  }
 
   useEffect(() => {
     if (shouldScrollToBottom) {
@@ -145,6 +161,16 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
               )}
             </div>
             ))}
+
+            {error && (
+              <div className="error-message">
+                <span>Sorry, there has been an error</span>
+                <button onClick={handleRetry} className="retry-button">
+                  Retry
+                </button>
+              </div>
+            )}
+
             <div ref={messageEndRef} className="gradient-orb"></div>
         </div>
       </div>

@@ -19,6 +19,7 @@
   --accent-3: #3b5998;
   --border-color: #1c2333;
   --nav-color: #1a1a1a;
+  --error-color-rgb: 255, 68, 68;
 
   /* Spacing scale - based on 4px base unit */
   --spacing-xs: 4px;
