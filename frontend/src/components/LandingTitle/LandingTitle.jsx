@@ -59,12 +59,16 @@ export default function LandingTitle ({ handleStartConvo }) {
                 </div>
         
             </div>
-            <ChatCard 
-            onSendMessage={handleStartConvo}
-            onMessageChange={handleMessageChange}
-            placeholder={"Describe your business..."} 
-            autoMessage={autoMessage}
-            />
+            <div className="prompt-wrap">
+
+                <ChatCard 
+                onSendMessage={handleStartConvo}
+                onMessageChange={handleMessageChange}
+                placeholder={"Describe your business..."} 
+                autoMessage={autoMessage}
+                />
+                <p className="prompt-subtext">You are chatting with an AI model, not a human.</p>
+            </div>
         </div>
 
     )

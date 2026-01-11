@@ -1,5 +1,5 @@
 .chat-card {
-    width: 600px;
+    width: 100%;
     background-color: var(--card-color);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-lg);
@@ -78,4 +78,12 @@
   .button-wrap {
     display: flex;
     gap: var(--spacing-md);
+  }
+
+
+  @media (max-width: 768px) {
+    .chat-card {
+      padding: var(--spacing-xs) var(--spacing-xs);
+      max-width: 500px
+    }
   }

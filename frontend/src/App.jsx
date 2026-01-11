@@ -10,6 +10,7 @@ import Navbar from './components/Navbar/Navbar'
 
 function App() {
 
+  // MUST return showLandingTitle = true; showChatInterface = false,
   const [showLandingTitle, setShowLandingTitle] = useState(true)
   const [showChatInterface, setShowChatInterface] = useState(false)
   const [showModal, setShowModal] = useState(false)
@@ -46,8 +47,6 @@ function App() {
       <Navbar 
       onOpenModal={handleShowMeetingModal}
       />
-
-      <div className='gradient-overlay'></div>
 
       {showMeetingModal && 
       <MeetingModal 

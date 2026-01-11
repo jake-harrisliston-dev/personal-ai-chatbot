@@ -119,18 +119,13 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
           return;
         }
 
-        // setMessages(prev => [...prev, {
-        //   role: 'assistant',
-        //   content: 'Error generating AI response: ' + error.message,
-        //   timestamp: new Date()
-        // }]);
-        // setIsLoading(false);
-
-        setMessages(prev => prev.slice(0, -1))
-        setError(error.message || 'Something went wrong')
-        setLastFailedMessage(message)
-        setIsLoading(false)
-        return;
+        else {
+          setMessages(prev => prev.slice(0, -1))
+          setError(error.message || 'Something went wrong')
+          setLastFailedMessage(message)
+          setIsLoading(false)
+          return;
+        }
       }
     };
   

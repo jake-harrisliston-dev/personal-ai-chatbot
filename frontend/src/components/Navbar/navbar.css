@@ -1,6 +1,7 @@
 .navbar {
     position: fixed;
     top: 0;
+    flex: 0 0 auto;
     width: 100vw;
     border-bottom: 0.5px solid var(--border-color);
     z-index: 1000;
@@ -60,4 +61,10 @@
 
 .nav-button-highlight:hover {
     background-color: rgb(var(--text-color-rgb), 1);
+}
+
+@media (max-width: 768px) {
+    .nav-button {
+        display: none;
+    }
 }

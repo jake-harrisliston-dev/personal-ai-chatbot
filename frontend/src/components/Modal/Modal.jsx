@@ -8,7 +8,7 @@ export default function Modal({ onClose, onSubmit }) {
         name: "",
         email: "",
         company: "",
-        marketing: true,
+        marketing: false,
         terms: false,
     })
 
@@ -28,7 +28,7 @@ export default function Modal({ onClose, onSubmit }) {
         e.preventDefault()
         
         const submitData = {
-            name: formData.name,
+            name: formData.name || undefined,
             business: formData.company,
             email: formData.email,
             marketing: formData.marketing,
@@ -58,7 +58,7 @@ export default function Modal({ onClose, onSubmit }) {
         <div className="modal-wrap">
             <div className="modal">
 
-                <p className="form-title">Your email is required for this service</p>
+                <p className="form-title">Get AI insights tailored to your business</p>
 
                 <form onSubmit={handleSubmit}>
                     {error && (
@@ -80,7 +80,7 @@ export default function Modal({ onClose, onSubmit }) {
                     <div className="input-field">
                         <label>Email</label>
                         <input
-                            type="text"
+                            type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
@@ -123,7 +123,18 @@ export default function Modal({ onClose, onSubmit }) {
                                     onChange={handleChange}
                                     required
                                 />
-                                I agree to the Terms & Conditions and Privacy Policy
+                                I agree to the {' '}
+                                <a href="https://www.jake-harrisliston.dev/terms-and-conditions" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="terms-highlight">
+                                 Terms & Conditions</a> and {' '}
+                                <a href="https://www.jake-harrisliston.dev/privacy-policy" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="terms-highlight"
+                                >
+                                 Privacy Policy</a>
                             </label>
                         </div>
                     </div>
@@ -136,7 +147,7 @@ export default function Modal({ onClose, onSubmit }) {
                     </button>
 
                     <div className="button-sub-text-wrap">
-                        <p>Why is your email required?</p>
+                        <p className="button-sub-text">Your email is required to prevent abuse</p>
                     </div>
 
                 </form>

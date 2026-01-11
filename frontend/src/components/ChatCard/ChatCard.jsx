@@ -65,9 +65,9 @@ export default function ChatCard({ onSendMessage, onMessageChange, placeholder, 
           rows={1}
         />
         <div className='button-wrap'>
-          <button className="btn-secondary">
+          {/* <button className="btn-secondary">
             <Icon name="mic" size={20} />
-          </button>
+          </button> */}
           <button className="send-button" onClick={handleSend}>
             <Icon name="submitButton" size={20} />
           </button>

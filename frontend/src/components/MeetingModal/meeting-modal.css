@@ -18,7 +18,7 @@
     width: 60vw;
     background-color: var(--background-color);
     padding: var(--spacing-huge) var(--spacing-huge);
-    border-left: 1px solid var(--border-color)
+    border-left: 1px solid var(--border-color);
 }
 
 .modal-title {
@@ -36,7 +36,6 @@
     align-items: center;
     justify-content: left;
     margin-bottom: var(--spacing-xxl);
-
 }
 
 .close-button {
@@ -48,4 +47,17 @@
 
 .close-button:hover {
     color: rgb(var(--text-color-rgb), 1);
+}
+
+@media (max-width: 768px) {
+    .meeting-modal {
+        width: 100%;
+        padding: var(--spacing-md) var(--spacing-md);
+        border-left: none;
+        overflow-y: auto;
+    }
+
+    .hor-div {
+        margin-bottom: var(--spacing-md);
+    }
 }

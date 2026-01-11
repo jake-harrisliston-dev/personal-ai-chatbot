@@ -144,3 +144,15 @@ a {
   resize: vertical;
   min-height: 120px;
 }
+
+@media (max-width: 768px) {
+  .input-field input,
+  .input-field textarea {
+  padding: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+  .input-field label {
+    font-size: var(--font-size-xs);
+  }
+}
