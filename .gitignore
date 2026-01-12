@@ -4,9 +4,13 @@
 *.env
 !.env.example
 
+# Ngrok auth
+ngrok.yml
+
 # Python
 __pycache__/
 *.py[cod]
+*.py[codz]
 *$py.class
 venv/
 env/
@@ -22,12 +26,6 @@ build/
 # IDE
 .vscode/
 .DS_Store
-
-
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[codz]
-*$py.class
 
 # C extensions
 *.so

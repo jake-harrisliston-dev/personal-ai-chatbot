@@ -105,7 +105,6 @@
   align-items: center;
   text-align: center;
   padding-bottom: var(--spacing-md);
-  border: 1px solid blue;
 }
 
 .prompt-subtext {
@@ -126,7 +125,7 @@
 @media (max-width: 768px) {
 
   .prompt-wrap {
-    padding: var(--spacing-xs) var(--spacing-sm);
+    padding: 0 var(--spacing-sm);
   }
 
   .chat-page {
@@ -135,5 +134,7 @@
 
   .prompt-subtext {
     max-width: 70%;
+    font-size: var(--font-size-xs);
+    margin-bottom: var(--spacing-sm);
   }
 }

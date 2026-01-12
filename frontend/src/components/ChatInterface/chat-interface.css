@@ -5,7 +5,7 @@
     flex: 1 1 auto;
     height: 100vh;
     display: flex;
-    padding-top: 50px;
+    padding-top: var(--spacing-xl);
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -21,7 +21,6 @@
     align-items: center;
     justify-content: top;
     padding: var(--spacing-md);
-    border: 1px solid yellow;
   }
 
   .chat-section {
@@ -119,5 +118,16 @@
 
     .chat-interface-wrap {
       height: 100dvh;
+      padding-top: var(--spacing-lg);
+      padding-bottom: 0;
     }
+
+    .chat-section-wrap {
+      max-width: 500px
+    }
+
+    .ai-message {
+      max-width: 95%;
+    }
+
   }

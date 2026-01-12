@@ -13,7 +13,6 @@
   .landing-title-hero-wrap {
     padding-top: 25vh;
     gap: var(--spacing-xxl);
-    border: 1px solid red;
 }
 
 /* Header Section */
@@ -87,8 +86,8 @@
   }
 
   .landing-title-hero-wrap {
-    /* flex: 0 0 auto;
-    padding-top: 0; */
+    flex: 1 1 auto;
+    padding-top: 50px;
     width: 100%;
     gap: var(--spacing-sm);
     display: flex;
@@ -103,5 +102,6 @@
 
   .subtitle {
     font-size: var(--font-size-sm);
+    max-width: 80%
   }
 }

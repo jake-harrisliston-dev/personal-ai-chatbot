@@ -96,8 +96,9 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
               content: appendFirstMessage[aiMessageIndex].content + 
                 "\n\n---\n\n" +
                 "\n\n*Please note: I'm an AI assistant providing general information only. " +
-                "This is not professional advice. Please verify all information independently. " +
-                "If you require more specific advice, I can assist you in booking a meeting with Jake.*" 
+                "Do not share passwords, financial details, or confidential business information. " +
+                "This is not professional advice - please verify all information independently. " +
+                "For detailed consultations, I can help you book a meeting with Jake.*"
             }
             return appendFirstMessage
           })
