@@ -13,7 +13,7 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false)
 
   // Add footer to end of first response
-  const [hasRecievedResponse, setHasRecievedResponse] = useState(false)
+  const hasSentDisclaimer = useRef(false)
 
   // Error handling
   const [error, setError] = useState(null);
@@ -106,9 +106,9 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
 
         setIsLoading(false);
 
-        if (!hasRecievedResponse) {
+        if (!hasSentDisclaimer.current) {
 
-          setHasRecievedResponse(true)
+          hasSentDisclaimer.current = true
 
           setMessages(prev => {
             const appendFirstMessage = [...prev]
