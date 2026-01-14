@@ -27,7 +27,6 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
   }, [first_message])
 
   const scrollToBottom = () => {
-    console.log("Scroll to bottom function called")
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }
 

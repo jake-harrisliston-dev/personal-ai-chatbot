@@ -19,6 +19,7 @@
     background-color: var(--background-color);
     padding: var(--spacing-huge) var(--spacing-huge);
     border-left: 1px solid var(--border-color);
+    overflow-y: auto;
 }
 
 .modal-title {
@@ -54,7 +55,6 @@
         width: 100%;
         padding: var(--spacing-md) var(--spacing-md);
         border-left: none;
-        overflow-y: auto;
     }
 
     .hor-div {

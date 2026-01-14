@@ -1,5 +1,5 @@
 import http
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
@@ -12,6 +12,8 @@ from supabase import create_client
 from pydantic import BaseModel
 from typing import Any, Optional
 import json
+import html
+import re
 
 load_dotenv()
 
@@ -27,6 +29,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    return response
 
 # Create supabase client
 supabase = create_client(
@@ -58,6 +68,28 @@ def parse_name(full_name: str):
         return parts[0], None
     else:
         return parts[0], parts[1]
+
+EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+
+def validate_email(email: str) -> str:
+    if not email or len(email) > 255: # Prevent ReDoS/Buffer issues
+        raise HTTPException(status_code=400, detail="Invalid email length")
+    
+    email = email.strip().lower()
+    if not EMAIL_REGEX.match(email):
+        raise HTTPException(status_code=400, detail="Invalid email format")
+    return email
+
+def sanitize_input(text: str, max_length: int = 2000) -> str:
+    """Clean user input to prevent injections"""
+    if not text:
+        return ""
+    
+    text = html.escape(text)
+    text = text[:max_length]
+    text = text.replace('\x00', '')
+    
+    return text.strip()
 
 async def stream_generator(messages, user_id):
 
@@ -98,14 +130,17 @@ async def form_submit(data: FormSubmit):
         
         first_name, last_name = parse_name(data.name)
 
-        user_check = supabase.table("leads").select("*").eq("email", data.email).execute()
+        email = validate_email(data.email)
+        business = sanitize_input(data.business) if data.business else None
+
+        user_check = supabase.table("leads").select("*").eq("email", email).execute()
 
         if not user_check.data:
             new_user = supabase.table("leads").insert({
                 "first_name": first_name,
                 "last_name": last_name,
-                "email": data.email,
-                "business": data.business,
+                "email": email,
+                "business": business,
                 "used_chatbot": True,
                 "marketing_opt_in": data.marketing,
                 "terms_agreement": data.terms,
@@ -153,7 +188,7 @@ async def ai_generate(data: GenerateAIResponse):
     try:
         # Get the user prompt from the frontend
         messages = data.data
-        email = data.email
+        email = validate_email(data.email)
 
         if not messages:
             raise HTTPException(status_code=400, detail="Message cannot be empty.")
@@ -177,9 +212,12 @@ async def ai_generate(data: GenerateAIResponse):
         # Clean messages (remove timestamp, keep only role + content)
         try: 
             cleaned_messages = [
-                {"role": msg["role"], "content": msg["content"]}
+                {
+                    "role": msg["role"], 
+                    "content": msg.get("content", "")[:1500]
+                }
                 for msg in messages
-            ]
+            ]       
 
         except (KeyError, TypeError) as e:
             raise HTTPException(

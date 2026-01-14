@@ -11,8 +11,6 @@ const apiCall = async (endpoint, options = {}) => {
           ...options.headers,
         },
       });
-
-      console.log(response)
       
       if (!response.ok) {
 
@@ -23,7 +21,6 @@ const apiCall = async (endpoint, options = {}) => {
 
         // handle 429 error
         if (response.status === 429) {
-          console.log('CAUGHT 429 error')
           const error = await response.json();
           const limitError = new Error(error.detail || 'Message limit reached');
           limitError.status = 429;
@@ -44,14 +41,12 @@ const apiCall = async (endpoint, options = {}) => {
 
 export const api = {
   aiGenerate: (data) => {
-    console.log("Sending to backend:", JSON.stringify(data));
     return apiCall(`/api/ai-generate`, {
       method: 'POST',
       body: JSON.stringify(data),
     });
   },
   formSubmit: (data) => {
-    console.log("Form data recieved in api.js: ", JSON.stringify(data))
     return apiCall(`/api/form-submit`, {
       method: 'POST',
       body: JSON.stringify(data)
