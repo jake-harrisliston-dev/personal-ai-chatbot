@@ -8,6 +8,10 @@
     bottom: 0;
     bottom: var(--spacing-xxxl);
   }
+
+  .chat-card:focus-within {
+    border-color: var(--border-color-hover);
+  }
   
   /* Input Container - textarea grows, button aligns to bottom */
   .input-container {
