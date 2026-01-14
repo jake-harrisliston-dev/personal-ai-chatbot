@@ -57,28 +57,50 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
         const reader = response.body.getReader()
         const decoder = new TextDecoder()
 
+        let buffer = ''
+
         while(true) {
           const {done, value} = await reader.read()
           if (done) break
           
           const chunk = decoder.decode(value, {stream: true})
-          
-          const data = JSON.parse(chunk.replace("data: ", "").trim())
+          buffer += chunk;
 
-          if (data.type === "response") {
-            setMessages(prev => {
-              const updated = [...prev]
-              updated[aiMessageIndex] ={
-                ...updated[aiMessageIndex],
-                content: updated[aiMessageIndex].content + data.content
+          const parts = buffer.split('\n\n');
+          buffer = parts.pop() || '';
+          
+          // const data = JSON.parse(chunk.replace("data: ", "").trim())
+
+          for (const part of parts) {
+            const trimmedMessage = part.trim()
+            
+            // Ignore empty lines or lines that don't look like our data
+            if (!trimmedMessage || !trimmedMessage.startsWith('data: ')) continue
+
+            try {
+              const jsonStr = trimmedMessage.replace('data: ', '').trim()
+              const data = JSON.parse(jsonStr)
+
+              // Update UI based on message type
+              if (data.type === "response") {
+                setMessages(prev => {
+                  const updated = [...prev]
+                  updated[aiMessageIndex] = {
+                    ...updated[aiMessageIndex],
+                    content: updated[aiMessageIndex].content + data.content
+                  }
+                  return updated
+                })
+              } 
+              else if (data.type === "tool_use") {
+                setTimeout(() => {
+                  aiOpenModal()
+                }, 750)
               }
-              return updated
-            })
-          }
-          else if (data.type === "tool_use") {
-            setTimeout(() => {
-              aiOpenModal()
-            }, 750)
+
+            } catch (parseError) {
+              console.error("Error parsing stream chunk:", parseError, "Chunk was:", trimmedMessage)
+            }
           }
         }
 
