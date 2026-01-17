@@ -1,5 +1,5 @@
 import http
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
@@ -14,6 +14,7 @@ from typing import Any, Optional
 import json
 import html
 import re
+import uuid
 
 load_dotenv()
 
@@ -123,18 +124,30 @@ async def stream_generator(messages, user_id):
         print(f"✗ Failed to save AI response: {str(e)}")
         traceback.print_exc()
 
-
+# Function: store user in DB and generate session ID
 @app.post("/api/form-submit")
-async def form_submit(data: FormSubmit):
+async def form_submit(data: FormSubmit, response: Response):
     try:
         
         first_name, last_name = parse_name(data.name)
-
         email = validate_email(data.email)
         business = sanitize_input(data.business) if data.business else None
 
+        # Generate session ID
+        session_id = str(uuid.uuid4())
+        print(f"session_id = {session_id}")
+        response.set_cookie(
+            key="chat_token",
+            value=session_id,
+            httponly=True,
+            samesite="lax",
+            secure=False # Change to True in production
+        )
+
+        # Check if user exists
         user_check = supabase.table("leads").select("*").eq("email", email).execute()
 
+        # If new user, store in DB
         if not user_check.data:
             new_user = supabase.table("leads").insert({
                 "first_name": first_name,
@@ -151,6 +164,7 @@ async def form_submit(data: FormSubmit):
             
             return {"success": "New user added"}
 
+        # If not new user, update data in DB
         user = user_check.data[0]
 
         updated_data = {
@@ -184,8 +198,12 @@ async def form_submit(data: FormSubmit):
 
 
 @app.post("/api/ai-generate")
-async def ai_generate(data: GenerateAIResponse):
+async def ai_generate(data: GenerateAIResponse, request: Request):
     try:
+
+        session_id = request.cookies.get("chat_token")
+        print(f"session_id in ai gen: {session_id}")
+
         # Get the user prompt from the frontend
         messages = data.data
         email = validate_email(data.email)
