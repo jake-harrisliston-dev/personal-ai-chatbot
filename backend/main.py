@@ -92,7 +92,7 @@ def sanitize_input(text: str, max_length: int = 2000) -> str:
     
     return text.strip()
 
-async def stream_generator(messages, user_id):
+async def stream_generator(messages, user_id, session_id):
 
     # Build full ai response for database 
     ai_response = ""
@@ -118,7 +118,8 @@ async def stream_generator(messages, user_id):
         ai_chat_log = supabase.table("lead_chatbot_comms").insert({
             "lead_id": user_id,
             "role": "assistant",
-            "content": ai_response
+            "content": ai_response,
+            "session_id": session_id
         }).execute()
     except Exception as e:
         print(f"✗ Failed to save AI response: {str(e)}")
@@ -159,19 +160,21 @@ async def form_submit(data: FormSubmit, response: Response):
                 "terms_agreement": data.terms,
                 "source": "Website Chatbot",
                 "last_contacted": 'now()',
-                "last_contacted_method": "Website Chatbot"
+                "last_contacted_method": "Website Chatbot",
+                "session_id": session_id
             }).execute()
             
             return {"success": "New user added"}
 
-        # If not new user, update data in DB
+        # If not new user, update data in DB and set as new session_id
         user = user_check.data[0]
 
         updated_data = {
             "used_chatbot": True,
             "marketing_opt_in": data.marketing,
             "last_contacted": "now()",
-            "last_contacted_method": "Website Chatbot"
+            "last_contacted_method": "Website Chatbot",
+            "session_id": session_id
         }
 
         # Only updated business, first_name and last_name if they have values (do not overright data with Null values)
@@ -206,7 +209,7 @@ async def ai_generate(data: GenerateAIResponse, request: Request):
 
         # Get the user prompt from the frontend
         messages = data.data
-        email = validate_email(data.email)
+        # email = validate_email(data.email)
 
         if not messages:
             raise HTTPException(status_code=400, detail="Message cannot be empty.")
@@ -215,17 +218,15 @@ async def ai_generate(data: GenerateAIResponse, request: Request):
         if not isinstance(messages, list):
             raise HTTPException(status_code=400, detail="Messages must be an array.")
 
-        if not email:
-            raise HTTPException(status_code=401, detail="Email required.")
-
-        check_email = supabase.table("leads").select("*").eq("email", email).execute()
-
-        if not check_email.data:
+        # Check session ID in DB
+        user_id_check = supabase.table("leads").select("id").eq("session_id", session_id).execute()
+        
+        if not user_id_check.data:
             raise HTTPException(status_code=401, detail="Email not registered. Submit form first.")
-
-        # Store user id
-        user = check_email.data[0]
+        
+        user = user_id_check.data[0]
         user_id = user["id"]
+        print(f"user_id: {user_id}")
 
         # Clean messages (remove timestamp, keep only role + content)
         try: 
@@ -257,7 +258,8 @@ async def ai_generate(data: GenerateAIResponse, request: Request):
             log_usr_msg = supabase.table("lead_chatbot_comms").insert({
                 "lead_id": user_id,
                 "role": "user",
-                "content": last_user_message
+                "content": last_user_message,
+                "session_id": session_id
                 }).execute()
 
         except Exception as e:
@@ -272,7 +274,7 @@ async def ai_generate(data: GenerateAIResponse, request: Request):
     
 
         return StreamingResponse(
-            stream_generator(cleaned_messages, user_id),
+            stream_generator(cleaned_messages, user_id, session_id),
             media_type="text/plain",
             headers={
                 "Cache-Control": "no-cache",
