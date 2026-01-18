@@ -93,12 +93,12 @@
     text-align: center;
     width: 100%;
     flex-grow: 1;
-    background-color: rgb(var(--text-color-rgb), 0.0);
-    border: 1px solid rgb(var(--text-color-rgb), 0.3);
+    background-color: rgb(var(--text-color-rgb), 0.9);
     border-radius: var(--border-radius-sm);
+    color: var(--background-color);
+    cursor: pointer;
 }
 
 .button-now:hover {
-    background-color: rgb(var(--text-color-rgb), 0.1);
-    border: 1px solid rgb(var(--text-color-rgb), 0.45);
+    background-color: rgb(var(--text-color-rgb), 1);
 }

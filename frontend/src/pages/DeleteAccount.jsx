@@ -56,7 +56,7 @@ export default function Unsubscribe({ showMeetingModal }) {
                     <div className="success-message">
                         <p className="form-title-del" >Your data has been successfully deleted</p>
                         <p>Still considering adopting AI in your business? Book your free consultation.</p>
-                        <a href="https://www.jake-harrisliston.dev" target="_blank" className="button-now">Book</a>
+                        <div onClick={showMeetingModal} className="button-now">Book</div>
                     </div>
             ) : (
                 <div className="default-form-wrap">

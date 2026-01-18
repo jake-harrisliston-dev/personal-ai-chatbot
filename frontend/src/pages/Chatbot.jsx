@@ -3,7 +3,6 @@ import '../App.css'
 
 import LandingTitle from '../components/LandingTitle/LandingTitle'
 import Modal from '../components/Modal/Modal'
-import MeetingModal from '../components/MeetingModal/MeetingModal'
 import ChatInterface from '../components/ChatInterface/ChatInterface'
 
 import Navbar from '../components/Navbar/Navbar'
