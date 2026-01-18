@@ -145,7 +145,7 @@ async def form_submit(data: FormSubmit, response: Response):
             value=session_id,
             httponly=True,
             samesite="lax",
-            secure=False # Change to True in production
+            secure=True # Change to True in production
         )
 
         print(f"Session ID in /api/form-submit: {session_id}")
