@@ -148,6 +148,8 @@ async def form_submit(data: FormSubmit, response: Response):
             secure=False # Change to True in production
         )
 
+        print(f"Session ID in /api/form-submit: {session_id}")
+
         # Check if user exists
         user_check = supabase.table("leads").select("*").eq("email", email).execute()
 
@@ -209,6 +211,8 @@ async def ai_generate(data: GenerateAIResponse, request: Request):
 
         # Check session ID for authorization
         session_id = request.cookies.get("chat_token")
+
+        print(f"session ID in /api/ai-generate; {session_id}")
 
         if not session_id or session_id == None:
             raise HTTPException(status_code=401, detail="Invalid session ID")

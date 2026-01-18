@@ -5,6 +5,7 @@ import { useState } from 'react'
 import Chatbot from './pages/Chatbot';
 import DeleteAccount from './pages/DeleteAccount';
 import MeetingModal from './components/MeetingModal/MeetingModal';
+import Consultation from './pages/Consultation';
 
 function App() {
   
@@ -25,6 +26,7 @@ function App() {
         
         {/* Utility pages */}
         <Route path="/delete-my-data/:userId" element={<DeleteAccount showMeetingModal={handleShowMeetingModal} />} />
+        <Route path="/consultation" element={<Consultation showMeetingModal={handleShowMeetingModal} />} />
       </Routes>
 
       {showMeetingModal && 
