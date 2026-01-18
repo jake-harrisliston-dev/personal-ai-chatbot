@@ -10,7 +10,7 @@ const apiCall = async (endpoint, options = {}) => {
           'Content-Type': 'application/json',
           ...options.headers,
         },
-        credentials: "include",
+        // credentials: "include",
       });
       
       if (!response.ok) {
@@ -50,6 +50,12 @@ export const api = {
   formSubmit: (data) => {
     return apiCall(`/api/form-submit`, {
       method: 'POST',
+      body: JSON.stringify(data)
+    })
+  },
+  deleteData: (data) => {
+    return apiCall(`/api/delete-data`, {
+      method: 'DELETE',
       body: JSON.stringify(data)
     })
   }

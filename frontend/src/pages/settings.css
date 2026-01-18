@@ -1,0 +1,79 @@
+.settings-wrap {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.settings-form-wrap {
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: top;
+}
+
+.form-title-del {
+    font-family: 'Inter', sans-serif;
+    font-size: var(--font-size-xxl);
+    line-height: var(--line-height-tight);
+    color: var(--text-color);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-md);
+}
+
+.del-input-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--spacing-lg);
+  margin-top: var(--spacing-xxl);
+}
+
+.del-input-field label {
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-secondary);
+}
+
+.del-input-field input,
+.del-input-field textarea {
+  padding: var(--spacing-md);
+  border: 1px solid rgb(var(--text-color-rgb), 0.1);
+  border-radius: var(--border-radius-sm);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: var(--font-size-base);
+  transition: var(--transition-md);
+}
+
+.del-input-field input:focus,
+.del-input-field textarea:focus {
+    outline: none;
+    border: 1px solid rgb(var(--text-color-rgb), 0.4);
+    background-color: var(--background-is-hover);
+}
+
+.perma-delete-btn {
+    background-color: rgb(var(--error-color-rgb), 0.2);
+    border: 1px solid rgb(var(--error-color-rgb), 0.8);
+    color: var(--text-color);
+    padding: var(--spacing-md) var(--spacing-xxl);
+    border-radius: var(--border-radius-sm);
+    margin-top: var(--spacing-xxl);
+    cursor: pointer;
+}
+
+.perma-delete-btn:hover {
+    background-color: rgb(var(--error-color-rgb), 0.3);
+    border: 1px solid rgb(var(--error-color-rgb), 1);
+
+}
+
+.important-note {
+    color: rgb(var(--text-color-rgb), 1);
+    margin-top: var(--spacing-lg);
+}
+

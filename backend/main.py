@@ -58,6 +58,10 @@ class GenerateAIResponse(BaseModel):
     email: Optional[str] = None
     data: list
 
+class DeleteModel(BaseModel):
+    email: str
+    userId: str
+
 # Re-usable logic for splitting name
 def parse_name(full_name: str):
     if not full_name:
@@ -291,4 +295,31 @@ async def ai_generate(data: GenerateAIResponse, request: Request):
         raise HTTPException(
             status_code=500,
             detail=f"Error generating AI content: {str(e)}"
+    )
+
+
+@app.delete("/api/delete-data")
+async def delete_data(data: DeleteModel):
+    try:
+        email = validate_email(data.email)
+        user_id = data.userId
+        
+        delete_user = supabase.table("leads").delete().eq("id", user_id).eq("email", email).execute()
+
+        if not delete_user.data or len(delete_user.data) == 0:
+            raise HTTPException(
+                status_code=404,
+                detail="No matching user found. Please check your email and try again."
+            )
+        
+        return {"success": "User data has been deleted."}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error deleint user data: {str(e)}")
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error deleint user data: {str(e)}"
     )
