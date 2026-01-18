@@ -136,7 +136,6 @@ async def form_submit(data: FormSubmit, response: Response):
 
         # Generate session ID
         session_id = str(uuid.uuid4())
-        print(f"session_id = {session_id}")
         response.set_cookie(
             key="chat_token",
             value=session_id,
@@ -204,21 +203,12 @@ async def form_submit(data: FormSubmit, response: Response):
 async def ai_generate(data: GenerateAIResponse, request: Request):
     try:
 
+        # Check session ID for authorization
         session_id = request.cookies.get("chat_token")
-        print(f"session_id in ai gen: {session_id}")
 
-        # Get the user prompt from the frontend
-        messages = data.data
-        # email = validate_email(data.email)
+        if not session_id or session_id == None:
+            raise HTTPException(status_code=401, detail="Invalid session ID")
 
-        if not messages:
-            raise HTTPException(status_code=400, detail="Message cannot be empty.")
-        
-        # Ensure messages is an array
-        if not isinstance(messages, list):
-            raise HTTPException(status_code=400, detail="Messages must be an array.")
-
-        # Check session ID in DB
         user_id_check = supabase.table("leads").select("id").eq("session_id", session_id).execute()
         
         if not user_id_check.data:
@@ -226,7 +216,17 @@ async def ai_generate(data: GenerateAIResponse, request: Request):
         
         user = user_id_check.data[0]
         user_id = user["id"]
-        print(f"user_id: {user_id}")
+
+
+        # Get the user prompt from the frontend
+        messages = data.data
+
+        if not messages:
+            raise HTTPException(status_code=400, detail="Message cannot be empty.")
+        
+        if not isinstance(messages, list):
+            raise HTTPException(status_code=400, detail="Messages must be an array.")
+
 
         # Clean messages (remove timestamp, keep only role + content)
         try: 

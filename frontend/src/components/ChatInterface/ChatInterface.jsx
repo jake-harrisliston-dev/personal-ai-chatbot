@@ -4,9 +4,8 @@ import ChatCard from "../ChatCard/ChatCard"
 import { api } from "../../services/api"
 import ReactMarkdown from 'react-markdown'
 
-export default function ChatInterface({ first_message, email, aiOpenModal }) {
+export default function ChatInterface({ first_message, aiOpenModal }) {
   const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const hasSentFirstMessage = useRef(false);
   const messageEndRef = useRef(null);
@@ -53,7 +52,7 @@ export default function ChatInterface({ first_message, email, aiOpenModal }) {
 
     // Send message to API
     try {
-        const response = await api.aiGenerate({data: updatedMessages, email: email})
+        const response = await api.aiGenerate({data: updatedMessages})
         const reader = response.body.getReader()
         const decoder = new TextDecoder()
 

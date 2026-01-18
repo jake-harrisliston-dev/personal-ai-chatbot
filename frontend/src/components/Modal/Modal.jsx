@@ -40,7 +40,7 @@ export default function Modal({ onClose, onSubmit }) {
         try {
             const response = await api.formSubmit(submitData)
 
-            onSubmit(submitData)
+            onSubmit()
             onClose() 
         } catch (error) {
             console.error("Error submitting form:", error)
