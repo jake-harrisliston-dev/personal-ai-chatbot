@@ -10,10 +10,13 @@ export default function ChatCard({ onSendMessage, onMessageChange, placeholder, 
   useEffect(() => {
     if (textareaRef.current) {
       requestAnimationFrame(() => {
-        if (textareaRef.current) {
-          textareaRef.current.style.height = 'auto'
-          textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px'
-      }})
+        requestAnimationFrame(() => {
+          if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto'
+            textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px'
+          }
+        })
+      })
     }
   }, [message])
 
