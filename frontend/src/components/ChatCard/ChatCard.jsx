@@ -9,8 +9,11 @@ export default function ChatCard({ onSendMessage, onMessageChange, placeholder, 
   // Auto-resize textarea
   useEffect(() => {
     if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto'
-      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px'
+      requestAnimationFrame(() => {
+        if (textareaRef.current) {
+          textareaRef.current.style.height = 'auto'
+          textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px'
+      }})
     }
   }, [message])
 
