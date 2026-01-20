@@ -8,16 +8,32 @@ export default function ChatCard({ onSendMessage, onMessageChange, placeholder, 
 
   // Auto-resize textarea
   useEffect(() => {
-    if (textareaRef.current) {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          if (textareaRef.current) {
-            textareaRef.current.style.height = 'auto'
-            textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px'
-          }
-        })
-      })
+    let hasResized = false
+    
+    const resize = () => {
+      if (textareaRef.current && !hasResized) {
+        textareaRef.current.style.height = 'auto'
+        textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px'
+        hasResized = true
+      }
     }
+  
+    // Try immediately (works on desktop/non-iOS)
+    resize()
+    
+    // Intersection observer for iOS Safari
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        resize()
+        observer.disconnect()
+      }
+    })
+    
+    if (textareaRef.current) {
+      observer.observe(textareaRef.current)
+    }
+    
+    return () => observer.disconnect()
   }, [message])
 
   // Change message value when preset pressed in LandingTitle
