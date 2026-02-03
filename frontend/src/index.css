@@ -107,7 +107,6 @@ a {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--spacing-container);
-  border: 1px solid red;
 }
 
 /* Form styling */

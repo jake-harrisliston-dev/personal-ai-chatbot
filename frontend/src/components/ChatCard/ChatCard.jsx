@@ -30,7 +30,7 @@ export default function ChatCard({ onSendMessage, onMessageChange, placeholder, 
     })
     
     if (textareaRef.current) {
-      observer.observe(textareaRef.current)
+      observer.observe(textareaRef.current) 
     }
     
     return () => observer.disconnect()

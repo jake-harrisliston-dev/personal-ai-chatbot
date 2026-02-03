@@ -7,7 +7,7 @@ export default function Navbar({ onOpenModal }) {
         <div className="navbar">
             <div className="nav-container">
                 
-                <a href="https://chat.jake-harrisliston.dev" className="nav-image"></a>    
+                <a href="https://www.jake-harrisliston.dev" className="nav-image"></a>    
                 
                 <div className="nav-button-wrap">
                     

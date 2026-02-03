@@ -212,8 +212,6 @@ async def ai_generate(data: GenerateAIResponse, request: Request):
         # Check session ID for authorization
         session_id = request.cookies.get("chat_token")
 
-        print(f"session ID in /api/ai-generate; {session_id}")
-
         if not session_id or session_id == None:
             raise HTTPException(status_code=401, detail="Invalid session ID")
 
